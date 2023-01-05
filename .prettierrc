@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "parser": "typescript",
+  "endOfLine": "auto",
+  "trailingComma": "all",
+  "semi": true,
+  "singleQuote": false,
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "jsxSingleQuote": false
+}

@@ -1,0 +1,22 @@
+version: "3.5"
+services:
+  db-name:
+    container_name: db-name
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: postgres_db
+    ports:
+      - 2323:5432
+    volumes:
+      - db-name-data:/var/lib/postgresql/data
+    networks:
+      - network
+
+volumes:
+  db-name-data:
+networks:
+  network:
+    driver: bridge
