@@ -5,8 +5,22 @@ import { ICustomersRepository } from "@modules/customers/repositories/customers-
 export class InMemoryCustomersRepository implements ICustomersRepository {
   public customers: Customer[] = [];
 
-  public async create(customer: Customer): Promise<void> {
+  public async create(customer: Customer): Promise<Customer> {
     this.customers.push(customer);
+
+    return customer;
+  }
+
+  public async save(customer: Customer): Promise<Customer> {
+    const customerIndex = this.customers.findIndex(
+      item => item.id === customer.id,
+    );
+
+    if (customerIndex >= 0) {
+      this.customers[customerIndex] = customer;
+    }
+
+    return customer;
   }
 
   public async alreadyExists(email: string): Promise<boolean> {
@@ -42,12 +56,4 @@ export class InMemoryCustomersRepository implements ICustomersRepository {
 
     return customer;
   }
-
-  // async save(customer: Customer): Promise<void> {
-  //   const customerIndex = this.customers.findIndex((item) => item.id === customer.id);
-
-  //   if (customerIndex >= 0) {
-  //     this.customers[customerIndex] = customer;
-  //   }
-  // }
 }

@@ -3,7 +3,7 @@ import { Replace } from "@shared/utils/replace";
 
 import { Password } from "./password";
 
-interface ICustomerProps {
+export interface ICustomerProps {
   name: string;
   email: string;
   password: Password;

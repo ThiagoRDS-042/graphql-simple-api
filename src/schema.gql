@@ -30,9 +30,18 @@ input ListCustomersInput {
 
 type Mutation {
   createCustomer(createCustomerInput: CreateCustomerInput!): CustomerModel!
+  deleteCustomer(customerId: String!): Boolean!
+  updateCustomer(updateCustomerInput: UpdateCustomerInput!): CustomerModel!
 }
 
 type Query {
   listCustomers(listCustomersInput: ListCustomersInput!): [CustomerModel!]!
   showCustomer(customerId: String!): CustomerModel!
+}
+
+input UpdateCustomerInput {
+  customerId: String!
+  email: String!
+  name: String!
+  password: String!
 }

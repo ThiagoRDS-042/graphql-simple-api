@@ -9,7 +9,7 @@ import { buildSchema } from "type-graphql";
 import { formatError } from "@shared/errors/format-error";
 import { context } from "@shared/infra/http/context";
 
-import { CustomerResolver } from "@modules/customers/http/graphql/resolvers/customer-resolver";
+import { CustomerResolver } from "@modules/customers/infra/http/graphql/resolvers/customer-resolver";
 
 const bootstrap = async () => {
   const schema = await buildSchema({

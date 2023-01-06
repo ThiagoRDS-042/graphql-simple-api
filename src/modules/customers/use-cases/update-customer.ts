@@ -6,33 +6,40 @@ import { Customer } from "../entities/customer-entity";
 import { Password } from "../entities/password";
 import { ICustomersRepository } from "../repositories/customers-repository";
 
-interface ICreateCustomerParams {
+interface IUpdateCustomerParams {
+  customerId: string;
   email: string;
   name: string;
   password: string;
 }
 
-interface ICreateCustomerResponse {
+interface IUpdateCustomerResponse {
   customer: Customer;
 }
 
 @injectable()
-export class CreateCustomer {
+export class UpdateCustomer {
   constructor(
     @inject("CustomersRepository")
     private readonly customersRepository: ICustomersRepository,
   ) {}
 
   public async execute(
-    data: ICreateCustomerParams,
-  ): Promise<ICreateCustomerResponse> {
-    const { email, name, password } = data;
+    data: IUpdateCustomerParams,
+  ): Promise<IUpdateCustomerResponse> {
+    const { email, name, password, customerId } = data;
+
+    const customerExist = await this.customersRepository.findById(customerId);
+
+    if (!customerExist) {
+      throw new AppError("Customer does not exists", "CUSTOMER_NOT_FOUND", 404);
+    }
 
     const customerAlreadyExists = await this.customersRepository.alreadyExists(
       email,
     );
 
-    if (customerAlreadyExists) {
+    if (customerExist.email !== email && customerAlreadyExists) {
       throw new AppError(
         "Customer already exists",
         "CUSTOMER_ALREADY_EXISTS",
@@ -40,13 +47,16 @@ export class CreateCustomer {
       );
     }
 
-    let customer = Customer.newCustomer({
-      email,
-      name,
-      password: Password.newPassword(password),
-    });
+    let customer = Customer.newCustomer(
+      {
+        email,
+        name,
+        password: Password.newPassword(password),
+      },
+      customerId,
+    );
 
-    customer = await this.customersRepository.create(customer);
+    customer = await this.customersRepository.save(customer);
 
     return { customer };
   }

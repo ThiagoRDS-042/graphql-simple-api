@@ -3,15 +3,17 @@ import { AppError } from "@shared/errors/app-error";
 export class Password {
   private readonly password: string;
 
-  constructor(password: string) {
-    const isPasswordStrong = this.validatePasswordStrong(password);
+  constructor(password: string, isEncrypted = false) {
+    if (!isEncrypted) {
+      const isPasswordStrong = this.validatePasswordStrong(password);
 
-    if (!isPasswordStrong) {
-      throw new AppError(
-        "Password does not strong",
-        "PASSWORD_NOT_STRONG",
-        400,
-      );
+      if (!isPasswordStrong) {
+        throw new AppError(
+          "Password does not strong",
+          "PASSWORD_NOT_STRONG",
+          400,
+        );
+      }
     }
 
     this.password = password;
@@ -27,8 +29,8 @@ export class Password {
     return this.password;
   }
 
-  public static newPassword(password: string): Password {
-    const instancePassword = new Password(password);
+  public static newPassword(password: string, isEncrypted = false): Password {
+    const instancePassword = new Password(password, isEncrypted);
 
     return instancePassword;
   }

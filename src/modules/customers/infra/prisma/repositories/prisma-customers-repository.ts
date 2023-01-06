@@ -1,4 +1,4 @@
-import { prisma } from "@shared/infra/database/prisma-client";
+import { prisma } from "@shared/infra/database/prisma/prisma-client";
 
 import { IFindManyOptions } from "@modules/customers/dtos/find-many-options";
 import { Customer } from "@modules/customers/entities/customer-entity";
@@ -7,12 +7,25 @@ import { ICustomersRepository } from "@modules/customers/repositories/customers-
 import { PrismaCustomerMapper } from "../mappers/prisma-customer-mapper";
 
 export class PrismaCustomersRepository implements ICustomersRepository {
-  public async create(customer: Customer): Promise<void> {
+  public async create(customer: Customer): Promise<Customer> {
     const raw = PrismaCustomerMapper.toPrisma(customer);
 
-    await prisma.customer.create({
+    const customerCreated = await prisma.customer.create({
       data: raw,
     });
+
+    return PrismaCustomerMapper.toDomain(customerCreated);
+  }
+
+  public async save(customer: Customer): Promise<Customer> {
+    const raw = PrismaCustomerMapper.toPrisma(customer);
+
+    const customerUpdated = await prisma.customer.update({
+      where: { id: raw.id },
+      data: raw,
+    });
+
+    return PrismaCustomerMapper.toDomain(customerUpdated);
   }
 
   public async alreadyExists(email: string): Promise<boolean> {
@@ -36,6 +49,7 @@ export class PrismaCustomersRepository implements ICustomersRepository {
         name: {
           contains: nameContains,
         },
+        deletedAt: null,
       },
     });
 
@@ -43,9 +57,10 @@ export class PrismaCustomersRepository implements ICustomersRepository {
   }
 
   public async findById(customerId: string): Promise<Customer | null> {
-    const customer = await prisma.customer.findUnique({
+    const customer = await prisma.customer.findFirst({
       where: {
         id: customerId,
+        deletedAt: null,
       },
     });
 

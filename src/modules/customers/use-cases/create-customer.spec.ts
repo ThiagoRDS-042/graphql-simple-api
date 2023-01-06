@@ -16,7 +16,7 @@ describe("Create customer", () => {
   });
 
   it("should be able to create a new customer", async () => {
-    const customer = await createCustomer.execute({
+    const { customer } = await createCustomer.execute({
       email: "customer@example.com",
       name: "john doe",
       password: "Strong-password1",

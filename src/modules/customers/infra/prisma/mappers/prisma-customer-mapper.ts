@@ -29,7 +29,7 @@ export class PrismaCustomerMapper {
       {
         email: raw.email,
         name: raw.name,
-        password: Password.newPassword(raw.password),
+        password: Password.newPassword(raw.password, true),
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
         deletedAt: raw.deletedAt,
