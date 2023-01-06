@@ -50,6 +50,7 @@
     "@mermaid-js/mermaid-cli": "^9.3.0",
     "@prisma/generator-helper": "^4.0.0",
     "@types/bcryptjs": "^2.4.2",
+    "@types/jest": "^29.2.5",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.48.0",

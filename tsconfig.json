@@ -18,8 +18,6 @@
     "noEmit": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./",
-    "baseUrl": "./",
     "paths": {
       "@config/*": ["./src/config/*"],
       "@shared/*": ["./src/shared/*"],
@@ -27,5 +25,5 @@
       "@test/*": ["./test/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "test"]
 }

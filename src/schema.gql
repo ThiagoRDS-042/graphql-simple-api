@@ -3,10 +3,36 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input CreateCustomerInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+type CustomerModel {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  email: String!
+  id: ID!
+  name: String!
+  updatedAt: DateTime!
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+input ListCustomersInput {
+  emailContains: String!
+  nameContains: String!
+}
+
 type Mutation {
-  auth: String!
+  createCustomer(createCustomerInput: CreateCustomerInput!): CustomerModel!
 }
 
 type Query {
-  hello: String!
+  listCustomers(listCustomersInput: ListCustomersInput!): [CustomerModel!]!
+  showCustomer(customerId: String!): CustomerModel!
 }

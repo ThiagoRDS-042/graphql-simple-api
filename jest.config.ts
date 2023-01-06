@@ -13,6 +13,7 @@ const config: Config = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
+  setupFilesAfterEnv: ["<rootDir>/test/utils/jest-after-env.ts"],
   collectCoverageFrom: ["./src/**/use-cases/*.ts", "./src/**/entities/*.ts"],
   coverageDirectory: "./coverage",
   testEnvironment: "node",
