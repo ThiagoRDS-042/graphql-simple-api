@@ -3,5 +3,5 @@
 
 yarn typecheck
 yarn lint
-# yarn test
+yarn test
 yarn build
