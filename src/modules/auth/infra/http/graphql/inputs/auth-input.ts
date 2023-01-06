@@ -2,12 +2,7 @@ import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 @InputType()
-export class UpdateCustomerInput {
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => String)
-  name: string;
-
+export class AuthInput {
   @IsEmail()
   @IsNotEmpty()
   @Field(() => String)

@@ -1,20 +1,10 @@
 import { Request, Response } from "express";
 
-interface IContextParams {
+export interface IContext {
   req: Request;
   res: Response;
 }
 
-interface IContextResponse {
-  authorization: string;
-}
-
-export const context = ({ req }: IContextParams): IContextResponse => {
-  let { authorization } = req.headers;
-
-  if (!authorization) {
-    authorization = "";
-  }
-
-  return { authorization };
+export const context = (context: IContext): IContext => {
+  return context;
 };

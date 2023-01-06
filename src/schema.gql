@@ -3,6 +3,11 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input AuthInput {
+  email: String!
+  password: String!
+}
+
 input CreateCustomerInput {
   email: String!
   name: String!
@@ -29,18 +34,19 @@ input ListCustomersInput {
 }
 
 type Mutation {
+  auth(authInput: AuthInput!): Boolean!
   createCustomer(createCustomerInput: CreateCustomerInput!): CustomerModel!
-  deleteCustomer(customerId: String!): Boolean!
+  deleteCustomer: Boolean!
+  logout: Boolean!
   updateCustomer(updateCustomerInput: UpdateCustomerInput!): CustomerModel!
 }
 
 type Query {
   listCustomers(listCustomersInput: ListCustomersInput!): [CustomerModel!]!
-  showCustomer(customerId: String!): CustomerModel!
+  showCustomer: CustomerModel!
 }
 
 input UpdateCustomerInput {
-  customerId: String!
   email: String!
   name: String!
   password: String!

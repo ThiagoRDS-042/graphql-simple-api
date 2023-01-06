@@ -2,19 +2,19 @@ import { BaseConfig } from "@shared/utils/base-config";
 
 type AlgorithmType = "HS256" | "RS256";
 
-interface JwtConfigProps {
+interface IJwtConfigProps {
   secretKey: string;
   algorithm: AlgorithmType;
   expiresIn: string | number;
 }
 
-const jwtConfig: JwtConfigProps = {
+const jwtConfig: IJwtConfigProps = {
   secretKey: process.env.JWT_SECRET_KEY,
   algorithm: "HS256",
   expiresIn: "1h",
 };
 
-export class JwtConfig extends BaseConfig<JwtConfigProps> {
+export class JwtConfig extends BaseConfig<IJwtConfigProps> {
   constructor() {
     super(jwtConfig);
   }

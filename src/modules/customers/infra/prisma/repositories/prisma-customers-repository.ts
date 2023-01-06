@@ -70,4 +70,19 @@ export class PrismaCustomersRepository implements ICustomersRepository {
 
     return PrismaCustomerMapper.toDomain(customer);
   }
+
+  public async findByEmail(email: string): Promise<Customer> {
+    const customer = await prisma.customer.findFirst({
+      where: {
+        email,
+        deletedAt: null,
+      },
+    });
+
+    if (!customer) {
+      return null;
+    }
+
+    return PrismaCustomerMapper.toDomain(customer);
+  }
 }

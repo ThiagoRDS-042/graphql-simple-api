@@ -1,5 +1,11 @@
 import { container } from "tsyringe";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
+
+import {
+  ICurrentCustomer,
+  CurrentCustomer,
+} from "@shared/infra/http/decorators/current-customer";
+import { ensureAuthenticated } from "@shared/infra/http/middleware/ensureAuthenticated";
 
 import { Customer } from "@modules/customers/entities/customer-entity";
 import {
@@ -36,11 +42,14 @@ export class CustomerResolver {
     return customer;
   }
 
+  @UseMiddleware(ensureAuthenticated)
   @Mutation(() => CustomerModel)
   async updateCustomer(
     @Arg("updateCustomerInput") input: UpdateCustomerInput,
+    @CurrentCustomer() currentCustomer: ICurrentCustomer,
   ): Promise<Customer> {
-    const { email, name, password, customerId } = input;
+    const { email, name, password } = input;
+    const { customerId } = currentCustomer;
 
     const updateCustomer = container.resolve(UpdateCustomer);
 
@@ -54,10 +63,13 @@ export class CustomerResolver {
     return customer;
   }
 
+  @UseMiddleware(ensureAuthenticated)
   @Mutation(() => Boolean)
   async deleteCustomer(
-    @Arg("customerId") customerId: string,
+    @CurrentCustomer() currentCustomer: ICurrentCustomer,
   ): Promise<boolean> {
+    const { customerId } = currentCustomer;
+
     const deleteCustomer = container.resolve(DeleteCustomer);
 
     await deleteCustomer.execute({ customerId });
@@ -65,6 +77,7 @@ export class CustomerResolver {
     return true;
   }
 
+  @UseMiddleware(ensureAuthenticated)
   @Query(() => [CustomerModel])
   async listCustomers(
     @Arg("listCustomersInput") input: ListCustomersInput,
@@ -81,8 +94,13 @@ export class CustomerResolver {
     return customers;
   }
 
+  @UseMiddleware(ensureAuthenticated)
   @Query(() => CustomerModel)
-  async showCustomer(@Arg("customerId") customerId: string): Promise<Customer> {
+  async showCustomer(
+    @CurrentCustomer() currentCustomer: ICurrentCustomer,
+  ): Promise<Customer> {
+    const { customerId } = currentCustomer;
+
     const showCustomer = container.resolve(ShowCustomer);
 
     const { customer } = await showCustomer.execute({ customerId });

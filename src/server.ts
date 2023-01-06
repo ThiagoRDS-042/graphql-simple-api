@@ -9,11 +9,12 @@ import { buildSchema } from "type-graphql";
 import { formatError } from "@shared/errors/format-error";
 import { context } from "@shared/infra/http/context";
 
+import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/AuthResolver";
 import { CustomerResolver } from "@modules/customers/infra/http/graphql/resolvers/customer-resolver";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [CustomerResolver],
+    resolvers: [CustomerResolver, AuthResolver],
     emitSchemaFile: path.resolve(__dirname, "schema.gql"),
   });
 
@@ -27,7 +28,12 @@ const bootstrap = async () => {
     cache: "bounded",
     context,
     formatError,
-    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    plugins: [
+      ApolloServerPluginLandingPageLocalDefault({
+        embed: true,
+        includeCookies: true,
+      }),
+    ],
   });
 
   const PORT = process.env.SERVER_PORT || 4003;

@@ -1,14 +1,34 @@
 import { BaseConfig } from "@shared/utils/base-config";
 
-interface CookieConfigProps {
-  key: string;
+type SameSiteType = "strict" | "none" | "lax";
+
+interface ICookieOptions {
+  httpOnly: boolean;
+  path: string;
+  sameSite: SameSiteType;
+  secure: boolean;
+  maxAge: number;
 }
 
-const cookieConfig: CookieConfigProps = {
+interface ICookieConfigProps {
+  key: string;
+  options: ICookieOptions;
+}
+
+const ONE_DAY_IN_SECONDS = 60 * 60 * 24 * 1;
+
+const cookieConfig: ICookieConfigProps = {
   key: "accessToken",
+  options: {
+    httpOnly: true,
+    path: "/",
+    sameSite: "strict",
+    secure: true,
+    maxAge: ONE_DAY_IN_SECONDS,
+  },
 };
 
-export class CookieConfig extends BaseConfig<CookieConfigProps> {
+export class CookieConfig extends BaseConfig<ICookieConfigProps> {
   constructor() {
     super(cookieConfig);
   }
@@ -19,6 +39,14 @@ export class CookieConfig extends BaseConfig<CookieConfigProps> {
 
   public set key(key: string) {
     this.props.key = key;
+  }
+
+  public get options(): ICookieOptions {
+    return this.props.options;
+  }
+
+  public set options(options: ICookieOptions) {
+    this.props.options = options;
   }
 
   public static newCookieConfig(): CookieConfig {
