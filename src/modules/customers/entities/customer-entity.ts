@@ -6,6 +6,7 @@ import { Password } from "./password";
 export interface ICustomerProps {
   name: string;
   email: string;
+  phone: string;
   password: Password;
   createdAt?: Date | null;
   updatedAt?: Date | null;
@@ -41,6 +42,14 @@ export class Customer extends BaseEntity<ICustomerProps> {
 
   public get email(): string {
     return this.props.email;
+  }
+
+  public set phone(phone: string) {
+    this.props.phone = phone;
+  }
+
+  public get phone(): string {
+    return this.props.phone;
   }
 
   public set password(password: Password) {

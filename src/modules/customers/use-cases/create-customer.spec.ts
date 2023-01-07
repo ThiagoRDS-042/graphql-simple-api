@@ -20,6 +20,7 @@ describe("Create customer", () => {
       email: "customer@example.com",
       name: "john doe",
       password: "Strong-password1",
+      phone: "4569-7896",
     });
 
     expect(inMemoryCustomersRepository.customers).toHaveLength(1);
@@ -30,6 +31,7 @@ describe("Create customer", () => {
     await createCustomer.execute({
       email: "customer@example.com",
       name: "john doe",
+      phone: "4569-7896",
       password: "Strong-password1",
     });
 
@@ -38,6 +40,7 @@ describe("Create customer", () => {
         email: "customer@example.com",
         name: "john doe",
         password: "Strong-password1",
+        phone: "4569-7896",
       }),
     ).rejects.toThrow(AppError);
   });

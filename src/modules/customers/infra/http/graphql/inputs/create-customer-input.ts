@@ -8,6 +8,11 @@ export class CreateCustomerInput {
   @Field(() => String)
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  phone: string;
+
   @IsEmail()
   @IsNotEmpty()
   @Field(() => String)

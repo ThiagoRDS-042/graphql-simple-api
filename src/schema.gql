@@ -12,6 +12,7 @@ input CreateCustomerInput {
   email: String!
   name: String!
   password: String!
+  phone: String!
 }
 
 type CustomerModel {
@@ -20,6 +21,7 @@ type CustomerModel {
   email: String!
   id: ID!
   name: String!
+  phone: String!
   updatedAt: DateTime!
 }
 
@@ -50,4 +52,5 @@ input UpdateCustomerInput {
   email: String!
   name: String!
   password: String!
+  phone: String!
 }

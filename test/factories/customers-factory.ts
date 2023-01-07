@@ -11,6 +11,7 @@ export const makeCustomer = (override: Override = {}): Customer => {
     email: "customer@example.com.br",
     name: "john doe",
     password: Password.newPassword("Strong-password1"),
+    phone: "4569-7896",
     ...override,
   });
 };

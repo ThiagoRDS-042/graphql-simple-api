@@ -18,12 +18,28 @@ model Customer {
   name      String
   email     String    @unique
   password  String
+  phone     String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
   orders    Order[]
 
   @@map("customers")
+}
+
+model Seller {
+  id        String    @id
+  name      String
+  email     String    @unique
+  document  String    @unique
+  password  String
+  phone     String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  products  Product[]
+
+  @@map("sellers")
 }
 
 enum Category {
@@ -40,6 +56,8 @@ model Product {
   price       Float
   category    Category
   description String?
+  sellerId    String
+  seller      Seller    @relation(fields: [sellerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")

@@ -5,6 +5,7 @@ interface IRawCustomer {
   id: string;
   name: string;
   email: string;
+  phone: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
@@ -16,6 +17,7 @@ export class PrismaCustomerMapper {
     return {
       id: customer.id,
       email: customer.email,
+      phone: customer.phone,
       name: customer.name,
       password: customer.password.value,
       createdAt: customer.createdAt,
@@ -28,6 +30,7 @@ export class PrismaCustomerMapper {
     return Customer.newCustomer(
       {
         email: raw.email,
+        phone: raw.phone,
         name: raw.name,
         password: Password.newPassword(raw.password, true),
         createdAt: raw.createdAt,

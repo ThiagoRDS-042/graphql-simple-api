@@ -10,6 +10,7 @@ interface IUpdateCustomerParams {
   customerId: string;
   email: string;
   name: string;
+  phone: string;
   password: string;
 }
 
@@ -27,7 +28,7 @@ export class UpdateCustomer {
   public async execute(
     data: IUpdateCustomerParams,
   ): Promise<IUpdateCustomerResponse> {
-    const { email, name, password, customerId } = data;
+    const { email, name, password, customerId, phone } = data;
 
     const customerExist = await this.customersRepository.findById(customerId);
 
@@ -52,6 +53,7 @@ export class UpdateCustomer {
         email,
         name,
         password: Password.newPassword(password),
+        phone,
       },
       customerId,
     );

@@ -14,6 +14,20 @@ FASHION FASHION
     String name  
     String email  
     String password  
+    String phone  
+    DateTime created_at  
+    DateTime updated_at  
+    DateTime deleted_at  "nullable"
+    }
+  
+
+  sellers {
+    String id PK 
+    String name  
+    String email  
+    String document  
+    String password  
+    String phone  
     DateTime created_at  
     DateTime updated_at  
     DateTime deleted_at  "nullable"
@@ -26,6 +40,7 @@ FASHION FASHION
     Float price  
     Category category  
     String description  "nullable"
+    String sellerId  
     DateTime created_at  
     DateTime updated_at  
     DateTime deleted_at  "nullable"
@@ -54,6 +69,7 @@ FASHION FASHION
     }
   
     products o|--|| Category : "enum:category"
+    products o{--|| sellers : "seller"
     stocks o|--|| products : "product"
     orders o{--|| products : "product"
     orders o{--|| customers : "customer"

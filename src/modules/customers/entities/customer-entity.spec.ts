@@ -7,6 +7,7 @@ describe("Customer", () => {
       email: "customer@example.com",
       name: "john doe",
       password: Password.newPassword("Strong-password1"),
+      phone: "1234-5678",
     });
 
     expect(author).toBeTruthy();

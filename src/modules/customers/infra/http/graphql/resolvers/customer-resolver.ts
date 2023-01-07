@@ -29,7 +29,7 @@ export class CustomerResolver {
   async createCustomer(
     @Arg("createCustomerInput") input: CreateCustomerInput,
   ): Promise<Customer> {
-    const { email, name, password } = input;
+    const { email, name, password, phone } = input;
 
     const createCustomer = container.resolve(CreateCustomer);
 
@@ -37,6 +37,7 @@ export class CustomerResolver {
       name,
       email,
       password,
+      phone,
     });
 
     return customer;
@@ -48,7 +49,7 @@ export class CustomerResolver {
     @Arg("updateCustomerInput") input: UpdateCustomerInput,
     @CurrentCustomer() currentCustomer: ICurrentCustomer,
   ): Promise<Customer> {
-    const { email, name, password } = input;
+    const { email, name, password, phone } = input;
     const { customerId } = currentCustomer;
 
     const updateCustomer = container.resolve(UpdateCustomer);
@@ -58,6 +59,7 @@ export class CustomerResolver {
       email,
       password,
       customerId,
+      phone,
     });
 
     return customer;

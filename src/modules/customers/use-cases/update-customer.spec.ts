@@ -26,6 +26,7 @@ describe("Update customer", () => {
       name: "john",
       password: "Strong-password2",
       customerId,
+      phone: "4569-7896",
     });
 
     expect(customer.email).toEqual("customer@mail.com");
@@ -47,6 +48,7 @@ describe("Update customer", () => {
         email: "customer@example.com.br",
         name: "john doe",
         password: "Strong-password1",
+        phone: "4569-7896",
         customerId,
       }),
     ).rejects.toThrow(AppError);
@@ -59,6 +61,7 @@ describe("Update customer", () => {
         name: "john doe",
         password: "Strong-password1",
         customerId: "non-existing-customer",
+        phone: "4569-7896",
       }),
     ).rejects.toThrow(AppError);
   });

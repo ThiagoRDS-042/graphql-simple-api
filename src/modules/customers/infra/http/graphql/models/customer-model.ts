@@ -11,6 +11,9 @@ export class CustomerModel {
   @Field(() => String)
   email: string;
 
+  @Field(() => String)
+  phone: string;
+
   @Field(() => Date)
   createdAt: Date;
 

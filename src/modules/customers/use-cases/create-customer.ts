@@ -9,6 +9,7 @@ import { ICustomersRepository } from "../repositories/customers-repository";
 interface ICreateCustomerParams {
   email: string;
   name: string;
+  phone: string;
   password: string;
 }
 
@@ -26,7 +27,7 @@ export class CreateCustomer {
   public async execute(
     data: ICreateCustomerParams,
   ): Promise<ICreateCustomerResponse> {
-    const { email, name, password } = data;
+    const { email, name, password, phone } = data;
 
     const customerAlreadyExists = await this.customersRepository.alreadyExists(
       email,
@@ -44,6 +45,7 @@ export class CreateCustomer {
       email,
       name,
       password: Password.newPassword(password),
+      phone,
     });
 
     customer = await this.customersRepository.create(customer);
