@@ -1,6 +1,14 @@
 ```mermaid
 erDiagram
 
+        Role {
+            ADMIN ADMIN
+CUSTOMER CUSTOMER
+SELLER SELLER
+        }
+    
+
+
         Category {
             ELECTRONICS ELECTRONICS
 BOOKS BOOKS
@@ -9,25 +17,14 @@ GAMES GAMES
 FASHION FASHION
         }
     
-  customers {
-    String id PK 
-    String name  
-    String email  
-    String password  
-    String phone  
-    DateTime created_at  
-    DateTime updated_at  
-    DateTime deleted_at  "nullable"
-    }
-  
-
-  sellers {
+  users {
     String id PK 
     String name  
     String email  
     String document  
     String password  
     String phone  
+    Role role  
     DateTime created_at  
     DateTime updated_at  
     DateTime deleted_at  "nullable"
@@ -40,7 +37,7 @@ FASHION FASHION
     Float price  
     Category category  
     String description  "nullable"
-    String sellerId  
+    String user_id  
     DateTime created_at  
     DateTime updated_at  
     DateTime deleted_at  "nullable"
@@ -62,15 +59,16 @@ FASHION FASHION
     Float price  
     Int amount  
     String product_id  
-    String customer_id  
+    String user_id  
     DateTime created_at  
     DateTime updated_at  
     DateTime deleted_at  "nullable"
     }
   
+    users o|--|| Role : "enum:role"
     products o|--|| Category : "enum:category"
-    products o{--|| sellers : "seller"
+    products o{--|| users : "user"
     stocks o|--|| products : "product"
     orders o{--|| products : "product"
-    orders o{--|| customers : "customer"
+    orders o{--|| users : "user"
 ```

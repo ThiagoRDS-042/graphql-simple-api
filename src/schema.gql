@@ -8,21 +8,13 @@ input AuthInput {
   password: String!
 }
 
-input CreateCustomerInput {
+input CreateUserInput {
+  document: String!
   email: String!
   name: String!
   password: String!
   phone: String!
-}
-
-type CustomerModel {
-  createdAt: DateTime!
-  deletedAt: DateTime
-  email: String!
-  id: ID!
-  name: String!
-  phone: String!
-  updatedAt: DateTime!
+  role: UserRoleInput!
 }
 
 """
@@ -30,27 +22,54 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
-input ListCustomersInput {
-  emailContains: String!
-  nameContains: String!
+input ListUsersInput {
+  emailContains: String
+  nameContains: String
+  roleEquals: UserRoleInput
 }
 
 type Mutation {
   auth(authInput: AuthInput!): Boolean!
-  createCustomer(createCustomerInput: CreateCustomerInput!): CustomerModel!
-  deleteCustomer: Boolean!
+  createUser(createUserInput: CreateUserInput!): UserModel!
+  deleteUser: Boolean!
   logout: Boolean!
-  updateCustomer(updateCustomerInput: UpdateCustomerInput!): CustomerModel!
+  updateUser(updateUserInput: UpdateUserInput!): UserModel!
 }
 
 type Query {
-  listCustomers(listCustomersInput: ListCustomersInput!): [CustomerModel!]!
-  showCustomer: CustomerModel!
+  listUsers(listUsersInput: ListUsersInput!): [UserModel!]!
+  showUser: UserModel!
 }
 
-input UpdateCustomerInput {
+input UpdateUserInput {
+  document: String!
   email: String!
   name: String!
   password: String!
   phone: String!
+}
+
+type UserModel {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  document: String!
+  email: String!
+  id: ID!
+  name: String!
+  phone: String!
+  role: UserRoleModel!
+  updatedAt: DateTime!
+}
+
+"""Available user roles on input"""
+enum UserRoleInput {
+  CUSTOMER
+  SELLER
+}
+
+"""Available user roles on model"""
+enum UserRoleModel {
+  ADMIN
+  CUSTOMER
+  SELLER
 }

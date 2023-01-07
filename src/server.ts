@@ -9,12 +9,12 @@ import { buildSchema } from "type-graphql";
 import { formatError } from "@shared/errors/format-error";
 import { context } from "@shared/infra/http/context";
 
-import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/AuthResolver";
-import { CustomerResolver } from "@modules/customers/infra/http/graphql/resolvers/customer-resolver";
+import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/auth-resolver";
+import { UserResolver } from "@modules/users/infra/http/graphql/resolvers/user-resolver";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [CustomerResolver, AuthResolver],
+    resolvers: [UserResolver, AuthResolver],
     emitSchemaFile: path.resolve(__dirname, "schema.gql"),
   });
 

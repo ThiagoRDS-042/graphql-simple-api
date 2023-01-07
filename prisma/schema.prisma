@@ -13,33 +13,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id        String    @id
-  name      String
-  email     String    @unique
-  password  String
-  phone     String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  orders    Order[]
-
-  @@map("customers")
+enum Role {
+  ADMIN
+  CUSTOMER
+  SELLER
 }
 
-model Seller {
+model User {
   id        String    @id
   name      String
   email     String    @unique
   document  String    @unique
   password  String
   phone     String
+  role      Role
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
   products  Product[]
+  Order     Order[]
 
-  @@map("sellers")
+  @@index([email])
+  @@index([name])
+  @@index([role])
+  @@map("users")
 }
 
 enum Category {
@@ -56,8 +53,8 @@ model Product {
   price       Float
   category    Category
   description String?
-  sellerId    String
-  seller      Seller    @relation(fields: [sellerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
@@ -65,6 +62,7 @@ model Product {
   orders      Order[]
 
   @@index([category])
+  @@index([userId])
   @@map("products")
 }
 
@@ -77,22 +75,23 @@ model Stock {
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
+  @@index([productId])
   @@map("stocks")
 }
 
 model Order {
-  id         String    @id
-  price      Float
-  amount     Int
-  productId  String    @map("product_id")
-  product    Product   @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Restrict)
-  customerId String    @map("customer_id")
-  customer   Customer  @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Restrict)
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  deletedAt  DateTime? @map("deleted_at")
+  id        String    @id
+  price     Float
+  amount    Int
+  productId String    @map("product_id")
+  product   Product   @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
   @@index([productId])
-  @@index([customerId])
+  @@index([userId])
   @@map("orders")
 }

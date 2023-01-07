@@ -1,1 +1,1 @@
-import "@modules/customers/providers";
+import "@modules/users/providers";

@@ -5,7 +5,7 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@shared/errors/app-error";
 
 import { JwtConfig } from "@config/jwt-config";
-import { ICustomersRepository } from "@modules/customers/repositories/customers-repository";
+import { IUsersRepository } from "@modules/users/repositories/users-repository";
 
 interface IAuthParams {
   email: string;
@@ -19,20 +19,20 @@ interface IAuthResponse {
 @injectable()
 export class Auth {
   constructor(
-    @inject("CustomersRepository")
-    private readonly customersRepository: ICustomersRepository,
+    @inject("UsersRepository")
+    private readonly usersRepository: IUsersRepository,
   ) {}
 
   public async execute(data: IAuthParams): Promise<IAuthResponse> {
     const { email, password } = data;
 
-    const customer = await this.customersRepository.findByEmail(email);
+    const user = await this.usersRepository.findByEmail(email);
 
-    if (!customer) {
+    if (!user) {
       throw new AppError("Invalid credentials", "INVALID_CREDENTIALS", 400);
     }
 
-    const passwordMatch = await compare(password, customer.password.value);
+    const passwordMatch = await compare(password, user.password.value);
 
     if (!passwordMatch) {
       throw new AppError("Invalid credentials", "INVALID_CREDENTIALS", 400);
@@ -41,8 +41,8 @@ export class Auth {
     const { algorithm, expiresIn, secretKey } = JwtConfig.newJwtConfig();
 
     const payload = {
-      customerName: customer.name,
-      customerId: customer.id,
+      userName: user.name,
+      userId: user.id,
     };
 
     const accessToken = sign(payload, secretKey, { algorithm, expiresIn });

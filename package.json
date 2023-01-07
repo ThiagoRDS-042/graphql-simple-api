@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prisma": {
+    "seed": "tsnd --poll -r tsconfig-paths/register --transpile-only src/shared/infra/database/prisma/seeds"
+  },
   "scripts": {
     "lint": "eslint ./src --ext ts --fix",
     "dev": "tsnd -r tsconfig-paths/register --poll --exit-child --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts",
@@ -12,6 +15,7 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:reset": "prisma migrate reset",
     "migrate": "prisma migrate deploy",
+    "seed": "prisma db seed",
     "test": "jest",
     "postinstall": "husky install",
     "typecheck": "tsc --project tsconfig.json"

@@ -15,7 +15,7 @@ interface ICookieConfigProps {
   options: ICookieOptions;
 }
 
-const ONE_DAY_IN_SECONDS = 60 * 60 * 24 * 1;
+const ONE_DAY_IN_SECONDS = 60 * 60 * 60 * 24 * 1;
 
 const cookieConfig: ICookieConfigProps = {
   key: "accessToken",

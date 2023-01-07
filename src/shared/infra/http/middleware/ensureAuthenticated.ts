@@ -8,13 +8,13 @@ import { CookieConfig } from "@config/cookie-config";
 
 import { IContext } from "../context";
 
-interface ICustomer {
-  customerName: string;
-  customerId: string;
+interface IUser {
+  userName: string;
+  userId: string;
 }
 
 interface IContextMiddleware extends IContext {
-  customer: ICustomer;
+  user: IUser;
 }
 
 export const ensureAuthenticated: MiddlewareFn<IContextMiddleware> = async (
@@ -35,7 +35,7 @@ export const ensureAuthenticated: MiddlewareFn<IContextMiddleware> = async (
     throw new AppError("Token must be not found", "TOKEN_NOT_FOUND", 401);
   }
 
-  context.customer = validateToken(accessToken);
+  context.user = validateToken(accessToken);
 
   return next();
 };
