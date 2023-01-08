@@ -43,6 +43,7 @@ export class Auth {
     const payload = {
       userName: user.name,
       userId: user.id,
+      userRole: user.role,
     };
 
     const accessToken = sign(payload, secretKey, { algorithm, expiresIn });

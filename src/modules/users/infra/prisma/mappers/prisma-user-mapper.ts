@@ -16,7 +16,7 @@ interface IRawUser {
   deletedAt: Date | null;
 }
 
-export class PrismaCUserMapper {
+export class PrismaUserMapper {
   public static toPrisma(user: User): IRawUser {
     return {
       id: user.id,

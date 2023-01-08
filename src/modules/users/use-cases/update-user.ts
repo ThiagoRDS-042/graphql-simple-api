@@ -33,7 +33,7 @@ export class UpdateUser {
 
     const userExist = await this.usersRepository.findById(userId);
 
-    if (!userExist) {
+    if (userExist === null) {
       throw new AppError("User does not exists", "USER_NOT_FOUND", 404);
     }
 

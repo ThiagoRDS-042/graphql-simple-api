@@ -38,5 +38,5 @@ export class UserModel {
   updatedAt: Date;
 
   @Field(() => Date, { nullable: true })
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }

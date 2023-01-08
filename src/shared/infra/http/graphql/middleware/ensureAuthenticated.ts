@@ -5,12 +5,14 @@ import { cookieParser } from "@shared/utils/cokkie-parser";
 import { validateToken } from "@shared/utils/validate-token";
 
 import { CookieConfig } from "@config/cookie-config";
+import { RoleType } from "@modules/users/entities/user-entity";
 
 import { IContext } from "../context";
 
 interface IUser {
   userName: string;
   userId: string;
+  userRole: RoleType;
 }
 
 interface IContextMiddleware extends IContext {

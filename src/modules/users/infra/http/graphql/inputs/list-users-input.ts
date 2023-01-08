@@ -7,13 +7,13 @@ import { UserRoleInput } from "./create-user-input";
 export class ListUsersInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
-  nameContains?: string;
+  nameContains?: string | null;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  emailContains?: string;
+  emailContains?: string | null;
 
   @IsOptional()
   @Field(() => UserRoleInput, { nullable: true })
-  roleEquals?: UserRoleInput;
+  roleEquals?: UserRoleInput | null;
 }

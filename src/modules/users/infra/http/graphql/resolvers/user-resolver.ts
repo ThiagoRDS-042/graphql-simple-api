@@ -8,12 +8,13 @@ import {
   UseMiddleware,
 } from "type-graphql";
 
-import { IContext } from "@shared/infra/http/context";
+import { IContext } from "@shared/infra/http/graphql/context";
 import {
   CurrentUser,
   ICurrentUser,
-} from "@shared/infra/http/decorators/current-user";
-import { ensureAuthenticated } from "@shared/infra/http/middleware/ensureAuthenticated";
+} from "@shared/infra/http/graphql/decorators/current-user";
+import { ensureAuthenticated } from "@shared/infra/http/graphql/middleware/ensureAuthenticated";
+import { ensureHasRole } from "@shared/infra/http/graphql/middleware/ensureHasRole";
 
 import { CookieConfig } from "@config/cookie-config";
 import {
@@ -98,6 +99,7 @@ export class UserResolver {
   }
 
   @UseMiddleware(ensureAuthenticated)
+  @UseMiddleware(ensureHasRole(["ADMIN"]))
   @Query(() => [UserModel])
   async listUsers(
     @Arg("listUsersInput") input: ListUsersInput,

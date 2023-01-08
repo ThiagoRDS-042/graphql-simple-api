@@ -8,6 +8,13 @@ input AuthInput {
   password: String!
 }
 
+input CreateProductInput {
+  category: ProductCategory!
+  description: String
+  name: String!
+  price: Float!
+}
+
 input CreateUserInput {
   document: String!
   email: String!
@@ -22,6 +29,14 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input ListProductsInput {
+  categoryEquals: ProductCategory
+  nameContains: String
+  priceGte: Float
+  priceLte: Float
+  userIdEquals: ID
+}
+
 input ListUsersInput {
   emailContains: String
   nameContains: String
@@ -30,15 +45,49 @@ input ListUsersInput {
 
 type Mutation {
   auth(authInput: AuthInput!): Boolean!
+  createProduct(createProductInput: CreateProductInput!): ProductModel!
   createUser(createUserInput: CreateUserInput!): UserModel!
+  deleteProduct(productId: String!): Boolean!
   deleteUser: Boolean!
   logout: Boolean!
+  updateProduct(updateProductInput: UpdateProductInput!): ProductModel!
   updateUser(updateUserInput: UpdateUserInput!): UserModel!
 }
 
+"""Available products categories"""
+enum ProductCategory {
+  BOOKS
+  ELECTRONICS
+  FASHION
+  GAMES
+  SPORTS
+}
+
+type ProductModel {
+  category: ProductCategory!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String
+  id: ID!
+  name: String!
+  price: Float!
+  updatedAt: DateTime!
+  userId: String!
+}
+
 type Query {
+  listProducts(listProductsInput: ListProductsInput!): [ProductModel!]!
   listUsers(listUsersInput: ListUsersInput!): [UserModel!]!
+  showProduct(productId: String!): ProductModel!
   showUser: UserModel!
+}
+
+input UpdateProductInput {
+  category: ProductCategory!
+  description: String
+  name: String!
+  price: Float!
+  productId: ID!
 }
 
 input UpdateUserInput {

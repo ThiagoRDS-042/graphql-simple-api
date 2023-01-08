@@ -1,35 +1,38 @@
 import { prisma } from "@shared/infra/database/prisma/prisma-client";
+import { parseNullableVariable } from "@shared/utils/parse-nullable-variable";
 
 import { IFindManyOptions } from "@modules/users/dtos/find-many-options";
 import { User } from "@modules/users/entities/user-entity";
 import { IUsersRepository } from "@modules/users/repositories/users-repository";
 
-import { PrismaCUserMapper } from "../mappers/prisma-user-mapper";
+import { PrismaUserMapper } from "../mappers/prisma-user-mapper";
 
 export class PrismaUsersRepository implements IUsersRepository {
   public async create(user: User): Promise<User> {
-    const raw = PrismaCUserMapper.toPrisma(user);
+    const raw = PrismaUserMapper.toPrisma(user);
 
     const userCreated = await prisma.user.create({
       data: raw,
     });
 
-    return PrismaCUserMapper.toDomain(userCreated);
+    return PrismaUserMapper.toDomain(userCreated);
   }
 
   public async save(user: User): Promise<User> {
-    const raw = PrismaCUserMapper.toPrisma(user);
+    const raw = PrismaUserMapper.toPrisma(user);
 
     const userUpdated = await prisma.user.update({
       where: { id: raw.id },
       data: raw,
     });
 
-    return PrismaCUserMapper.toDomain(userUpdated);
+    return PrismaUserMapper.toDomain(userUpdated);
   }
 
   public async findMany(options: IFindManyOptions): Promise<User[]> {
-    const { emailContains, nameContains, roleEquals } = options;
+    const emailContains = parseNullableVariable(options.emailContains);
+    const nameContains = parseNullableVariable(options.nameContains);
+    const roleEquals = parseNullableVariable(options.roleEquals);
 
     const users = await prisma.user.findMany({
       where: {
@@ -49,7 +52,7 @@ export class PrismaUsersRepository implements IUsersRepository {
       },
     });
 
-    return users.map(PrismaCUserMapper.toDomain);
+    return users.map(PrismaUserMapper.toDomain);
   }
 
   public async findById(userId: string): Promise<User | null> {
@@ -59,11 +62,11 @@ export class PrismaUsersRepository implements IUsersRepository {
       },
     });
 
-    if (!user) {
+    if (user === null) {
       return null;
     }
 
-    return PrismaCUserMapper.toDomain(user);
+    return PrismaUserMapper.toDomain(user);
   }
 
   public async findByEmail(email: string): Promise<User | null> {
@@ -73,11 +76,11 @@ export class PrismaUsersRepository implements IUsersRepository {
       },
     });
 
-    if (!user) {
+    if (user === null) {
       return null;
     }
 
-    return PrismaCUserMapper.toDomain(user);
+    return PrismaUserMapper.toDomain(user);
   }
 
   public async findByDocument(document: string): Promise<User | null> {
@@ -87,10 +90,10 @@ export class PrismaUsersRepository implements IUsersRepository {
       },
     });
 
-    if (!user) {
+    if (user === null) {
       return null;
     }
 
-    return PrismaCUserMapper.toDomain(user);
+    return PrismaUserMapper.toDomain(user);
   }
 }

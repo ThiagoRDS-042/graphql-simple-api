@@ -7,14 +7,15 @@ import path from "node:path";
 import { buildSchema } from "type-graphql";
 
 import { formatError } from "@shared/errors/format-error";
-import { context } from "@shared/infra/http/context";
+import { context } from "@shared/infra/http/graphql/context";
 
 import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/auth-resolver";
+import { ProductResolver } from "@modules/products/infra/http/graphql/resolvers/product-resolver";
 import { UserResolver } from "@modules/users/infra/http/graphql/resolvers/user-resolver";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [UserResolver, AuthResolver],
+    resolvers: [UserResolver, AuthResolver, ProductResolver],
     emitSchemaFile: path.resolve(__dirname, "schema.gql"),
   });
 

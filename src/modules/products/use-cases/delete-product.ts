@@ -1,0 +1,36 @@
+import { inject, injectable } from "tsyringe";
+
+import { AppError } from "@shared/errors/app-error";
+
+import { IProductsRepository } from "../repositories/products-repository";
+
+interface IDeleteProductParams {
+  productId: string;
+  userId: string;
+}
+
+@injectable()
+export class DeleteProduct {
+  constructor(
+    @inject("ProductsRepository")
+    private readonly productsRepository: IProductsRepository,
+  ) {}
+
+  public async execute(data: IDeleteProductParams): Promise<void> {
+    const { productId, userId } = data;
+
+    const product = await this.productsRepository.findById(productId);
+
+    if (product === null) {
+      throw new AppError("Product does not exist", "PRODUCT_NOT_FOUND", 404);
+    }
+
+    if (product.userId !== userId) {
+      throw new AppError("Forbidden", "FORBIDDEN", 403);
+    }
+
+    product.delete();
+
+    await this.productsRepository.save(product);
+  }
+}

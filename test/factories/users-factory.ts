@@ -7,7 +7,7 @@ type Override = Partial<IUserProps>;
 
 export const makeUser = (override: Override = {}): User => {
   return User.newUser({
-    email: "customer@example.com.br",
+    email: "user_customer@example.com.br",
     name: "john doe",
     password: Password.newPassword("Strong-password1"),
     phone: Phone.newPhone("(12) 1.1234-5678"),

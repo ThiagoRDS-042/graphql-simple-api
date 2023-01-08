@@ -63,6 +63,8 @@ model Product {
 
   @@index([category])
   @@index([userId])
+  @@index([name])
+  @@index([price])
   @@map("products")
 }
 

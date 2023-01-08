@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 
-import { IContext } from "@shared/infra/http/context";
+import { IContext } from "@shared/infra/http/graphql/context";
 
 import { CookieConfig } from "@config/cookie-config";
 import { Auth } from "@modules/auth/use-cases/auth";
