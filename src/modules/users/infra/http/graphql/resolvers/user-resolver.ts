@@ -2,9 +2,11 @@ import { container } from "tsyringe";
 import {
   Arg,
   Ctx,
+  FieldResolver,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from "type-graphql";
 
@@ -13,10 +15,15 @@ import {
   CurrentUser,
   ICurrentUser,
 } from "@shared/infra/http/graphql/decorators/current-user";
-import { ensureAuthenticated } from "@shared/infra/http/graphql/middleware/ensureAuthenticated";
-import { ensureHasRole } from "@shared/infra/http/graphql/middleware/ensureHasRole";
+import { ensureAuthenticated } from "@shared/infra/http/graphql/middlewares/ensureAuthenticated";
+import { ensureHasRole } from "@shared/infra/http/graphql/middlewares/ensureHasRole";
 
 import { CookieConfig } from "@config/cookie-config";
+import { ProductModel } from "@modules/products/infra/http/graphql/models/product-model";
+import {
+  IProductViewModelResponse,
+  ProductViewModel,
+} from "@modules/products/infra/http/view-models/product-view-model";
 import {
   CreateUser,
   DeleteUser,
@@ -30,6 +37,7 @@ import {
   UserViewModel,
 } from "../../view-models/user-view-model";
 import { CreateUserInput, ListUsersInput, UpdateUserInput } from "../inputs";
+import { UserRoleInput } from "../inputs/create-user-input";
 import { UserModel } from "../models/user-model";
 
 @Resolver(() => UserModel)
@@ -102,9 +110,17 @@ export class UserResolver {
   @UseMiddleware(ensureHasRole(["ADMIN"]))
   @Query(() => [UserModel])
   async listUsers(
-    @Arg("listUsersInput") input: ListUsersInput,
+    @Arg("listUsersInput", { nullable: true }) input: ListUsersInput,
   ): Promise<IUserViewModelResponse[]> {
-    const { emailContains, nameContains, roleEquals } = input;
+    let emailContains: string = undefined;
+    let nameContains: string = undefined;
+    let roleEquals: UserRoleInput = undefined;
+
+    if (input) {
+      emailContains = input.emailContains;
+      nameContains = input.nameContains;
+      roleEquals = input.roleEquals;
+    }
 
     const listUsers = container.resolve(ListUsers);
 
@@ -129,5 +145,19 @@ export class UserResolver {
     const { user } = await showUser.execute({ userId });
 
     return UserViewModel.toHTTP(user);
+  }
+
+  @FieldResolver(() => ProductModel)
+  async products(
+    @Root() userModel: UserModel,
+    @Ctx() context: IContext,
+  ): Promise<IProductViewModelResponse[]> {
+    const { productDataSource } = context.dataSources;
+
+    const { id: userId } = userModel;
+
+    const products = await productDataSource.listByUserId(userId);
+
+    return products.map(ProductViewModel.toHTTP);
   }
 }

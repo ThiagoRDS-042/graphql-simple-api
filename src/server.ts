@@ -10,7 +10,9 @@ import { formatError } from "@shared/errors/format-error";
 import { context } from "@shared/infra/http/graphql/context";
 
 import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/auth-resolver";
+import { ProductDataSource } from "@modules/products/infra/http/graphql/data-source";
 import { ProductResolver } from "@modules/products/infra/http/graphql/resolvers/product-resolver";
+import { UserDataSource } from "@modules/users/infra/http/graphql/data-source";
 import { UserResolver } from "@modules/users/infra/http/graphql/resolvers/user-resolver";
 
 const bootstrap = async () => {
@@ -29,6 +31,10 @@ const bootstrap = async () => {
     cache: "bounded",
     context,
     formatError,
+    dataSources: () => ({
+      userDataSource: new UserDataSource(),
+      productDataSource: new ProductDataSource(),
+    }),
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({
         embed: true,

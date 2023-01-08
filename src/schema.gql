@@ -72,12 +72,12 @@ type ProductModel {
   name: String!
   price: Float!
   updatedAt: DateTime!
-  userId: String!
+  user: UserModel!
 }
 
 type Query {
-  listProducts(listProductsInput: ListProductsInput!): [ProductModel!]!
-  listUsers(listUsersInput: ListUsersInput!): [UserModel!]!
+  listProducts(listProductsInput: ListProductsInput): [ProductModel!]!
+  listUsers(listUsersInput: ListUsersInput): [UserModel!]!
   showProduct(productId: String!): ProductModel!
   showUser: UserModel!
 }
@@ -106,6 +106,7 @@ type UserModel {
   id: ID!
   name: String!
   phone: String!
+  products: [ProductModel!]!
   role: UserRoleModel!
   updatedAt: DateTime!
 }

@@ -1,12 +1,22 @@
 import { container } from "tsyringe";
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+  UseMiddleware,
+} from "type-graphql";
 
+import { IContext } from "@shared/infra/http/graphql/context";
 import {
   CurrentUser,
   ICurrentUser,
 } from "@shared/infra/http/graphql/decorators/current-user";
-import { ensureAuthenticated } from "@shared/infra/http/graphql/middleware/ensureAuthenticated";
-import { ensureHasRole } from "@shared/infra/http/graphql/middleware/ensureHasRole";
+import { ensureAuthenticated } from "@shared/infra/http/graphql/middlewares/ensureAuthenticated";
+import { ensureHasRole } from "@shared/infra/http/graphql/middlewares/ensureHasRole";
 
 import {
   CreateProduct,
@@ -15,6 +25,11 @@ import {
   ListProducts,
   ShowProduct,
 } from "@modules/products/use-cases";
+import { UserModel } from "@modules/users/infra/http/graphql/models/user-model";
+import {
+  IUserViewModelResponse,
+  UserViewModel,
+} from "@modules/users/infra/http/view-models/user-view-model";
 
 import {
   IProductViewModelResponse,
@@ -25,7 +40,7 @@ import {
   UpdateProductInput,
   ListProductsInput,
 } from "../inputs";
-import { ProductModel } from "../models/product-model";
+import { ProductCategory, ProductModel } from "../models/product-model";
 
 @Resolver(() => ProductModel)
 export class ProductResolver {
@@ -95,10 +110,21 @@ export class ProductResolver {
   @UseMiddleware(ensureAuthenticated)
   @Query(() => [ProductModel])
   async listProducts(
-    @Arg("listProductsInput") input: ListProductsInput,
+    @Arg("listProductsInput", { nullable: true }) input: ListProductsInput,
   ): Promise<IProductViewModelResponse[]> {
-    const { categoryEquals, nameContains, priceGte, priceLte, userIdEquals } =
-      input;
+    let categoryEquals: ProductCategory = undefined;
+    let nameContains: string = undefined;
+    let priceGte: number = undefined;
+    let priceLte: number = undefined;
+    let userIdEquals: string = undefined;
+
+    if (input) {
+      categoryEquals = input.categoryEquals;
+      nameContains = input.nameContains;
+      priceGte = input.priceGte;
+      priceLte = input.priceLte;
+      userIdEquals = input.userIdEquals;
+    }
 
     const listProducts = container.resolve(ListProducts);
 
@@ -123,5 +149,19 @@ export class ProductResolver {
     const { product } = await showProduct.execute({ productId });
 
     return ProductViewModel.toHTTP(product);
+  }
+
+  @FieldResolver(() => UserModel)
+  async user(
+    @Root() productModel: ProductModel,
+    @Ctx() context: IContext,
+  ): Promise<IUserViewModelResponse> {
+    const { userDataSource } = context.dataSources;
+
+    const { userId } = productModel;
+
+    const user = await userDataSource.getById(userId);
+
+    return UserViewModel.toHTTP(user);
   }
 }

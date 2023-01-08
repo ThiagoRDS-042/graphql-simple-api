@@ -25,7 +25,7 @@ export class InMemoryProductsRepository implements IProductsRepository {
 
   public async findById(productId: string): Promise<Product | null> {
     const product = this.products.find(
-      item => item.id === productId && typeof item.deletedAt === "undefined",
+      item => item.id === productId && !item.deletedAt,
     );
 
     if (!product) {
@@ -62,7 +62,7 @@ export class InMemoryProductsRepository implements IProductsRepository {
     }
 
     if (products.length > 0) {
-      products = products.filter(item => typeof item.deletedAt === "undefined");
+      products = products.filter(item => !item.deletedAt);
     }
 
     return products;

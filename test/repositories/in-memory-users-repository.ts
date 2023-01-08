@@ -45,16 +45,14 @@ export class InMemoryUsersRepository implements IUsersRepository {
     }
 
     if (users.length > 0) {
-      users = users.filter(item => typeof item.deletedAt === "undefined");
+      users = users.filter(item => !item.deletedAt);
     }
 
     return users;
   }
 
   public async findById(userId: string): Promise<User | null> {
-    const user = this.users.find(
-      item => item.id === userId && typeof item.deletedAt === "undefined",
-    );
+    const user = this.users.find(item => item.id === userId && !item.deletedAt);
 
     if (!user) {
       return null;

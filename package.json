@@ -31,9 +31,11 @@
   "dependencies": {
     "@prisma/client": "^4.8.0",
     "apollo-server": "^3.11.1",
+    "apollo-server-caching": "^3.3.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.14.0",
+    "dataloader": "^2.1.0",
     "dotenv": "^16.0.3",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^9.0.0",

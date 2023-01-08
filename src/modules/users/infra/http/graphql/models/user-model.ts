@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 
+import { ProductModel } from "@modules/products/infra/http/graphql/models/product-model";
+
 enum UserRoleModel {
   ADMIN = "ADMIN",
   CUSTOMER = "CUSTOMER",
@@ -30,6 +32,9 @@ export class UserModel {
 
   @Field(() => String)
   phone: string;
+
+  @Field(() => [ProductModel])
+  products: ProductModel[];
 
   @Field(() => Date)
   createdAt: Date;
