@@ -2,6 +2,8 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/app-error";
 
+import { IStocksRepository } from "@modules/stocks/repositories/stocks-repository";
+
 import { IProductsRepository } from "../repositories/products-repository";
 
 interface IDeleteProductParams {
@@ -14,6 +16,9 @@ export class DeleteProduct {
   constructor(
     @inject("ProductsRepository")
     private readonly productsRepository: IProductsRepository,
+
+    @inject("StocksRepository")
+    private readonly stocksRepository: IStocksRepository,
   ) {}
 
   public async execute(data: IDeleteProductParams): Promise<void> {
@@ -32,5 +37,12 @@ export class DeleteProduct {
     product.delete();
 
     await this.productsRepository.save(product);
+
+    const stock = await this.stocksRepository.findByProductId(productId);
+    if (stock) {
+      stock.delete();
+
+      await this.stocksRepository.save(stock);
+    }
   }
 }
