@@ -50,4 +50,26 @@ describe("Create user", () => {
       }),
     ).rejects.toThrow(AppError);
   });
+
+  it("should be able to create a new user with existing document", async () => {
+    await createUser.execute({
+      email: "user@example.com",
+      name: "john doe",
+      password: "Strong-password1",
+      phone: "(12) 1.1234-5678",
+      document: "123.456.789-10",
+      role: "CUSTOMER",
+    });
+
+    await expect(() =>
+      createUser.execute({
+        email: "user2@example.com",
+        name: "john doe",
+        password: "Strong-password1",
+        phone: "(12) 1.1234-5678",
+        document: "123.456.789-10",
+        role: "CUSTOMER",
+      }),
+    ).rejects.toThrow(AppError);
+  });
 });

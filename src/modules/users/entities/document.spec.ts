@@ -15,7 +15,11 @@ describe("Document", () => {
     expect(documentCNPJ).toBeTruthy();
   });
 
-  it("should not be able to create a invalid document", () => {
+  it("should not be able to create a invalid document CNPJ", () => {
     expect(() => Document.newDocument("invalid-document")).toThrow(AppError);
+  });
+
+  it("should not be able to create a invalid document CPF", () => {
+    expect(() => Document.newDocument("12345678910111")).toThrow(AppError);
   });
 });

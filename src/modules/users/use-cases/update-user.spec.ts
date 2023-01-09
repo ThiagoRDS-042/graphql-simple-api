@@ -3,6 +3,7 @@ import { AppError } from "@shared/errors/app-error";
 import { makeUser } from "@test/factories/users-factory";
 import { InMemoryUsersRepository } from "@test/repositories/in-memory-users-repository";
 
+import { Document } from "../entities/document";
 import { UpdateUser } from "./update-user";
 
 describe("Update customer", () => {
@@ -47,6 +48,30 @@ describe("Update customer", () => {
     await expect(() =>
       updateCustomer.execute({
         email: "user@example.com.br",
+        name: "john doe",
+        password: "Strong-password1",
+        phone: "(12) 1.4569-7896",
+        document: "123.456.789-10",
+        userId,
+      }),
+    ).rejects.toThrow(AppError);
+  });
+
+  it("should be able to update a user with existing document", async () => {
+    await inMemoryUsersRepository.create(
+      makeUser({
+        email: "user@example.com.br",
+        document: Document.newDocument("123.456.789-10"),
+      }),
+    );
+
+    const { id: userId } = await inMemoryUsersRepository.create(
+      makeUser({ email: "user_test@example.com" }),
+    );
+
+    await expect(() =>
+      updateCustomer.execute({
+        email: "user_test@example.com.br",
         name: "john doe",
         password: "Strong-password1",
         phone: "(12) 1.4569-7896",

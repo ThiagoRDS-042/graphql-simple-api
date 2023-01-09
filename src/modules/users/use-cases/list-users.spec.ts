@@ -15,12 +15,16 @@ describe("List users", () => {
   });
 
   it("should be able to list an users", async () => {
-    const user = await inMemoryUsersRepository.create(makeUser());
+    const {
+      name: nameContains,
+      email: emailContains,
+      role: roleEquals,
+    } = await inMemoryUsersRepository.create(makeUser());
 
     const { users } = await listCustomers.execute({
-      nameContains: user.name,
-      emailContains: user.email,
-      roleEquals: user.role,
+      nameContains,
+      emailContains,
+      roleEquals,
     });
 
     expect(users).toHaveLength(1);

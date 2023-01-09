@@ -13,14 +13,20 @@ describe("List products", () => {
     done();
   });
   it("should be able to list an products", async () => {
-    const product = await inMemoryProductsRepository.create(makeProduct());
+    const {
+      category: categoryEquals,
+      name: nameContains,
+      price: priceGte,
+      price: priceLte,
+      userId: userIdEquals,
+    } = await inMemoryProductsRepository.create(makeProduct());
 
     const { products } = await listProducts.execute({
-      categoryEquals: product.category,
-      nameContains: product.name,
-      priceGte: product.price,
-      priceLte: product.price,
-      userIdEquals: product.userId,
+      categoryEquals,
+      nameContains,
+      priceGte,
+      priceLte,
+      userIdEquals,
     });
 
     expect(products).toHaveLength(1);
