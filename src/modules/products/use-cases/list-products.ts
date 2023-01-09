@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { CategoryType, Product } from "../entities/product-entity";
-import { IProductsRepository } from "../repositories/products-repository";
+import { IProductsRepository } from "../repositories/interfaces/products-repository";
 
 interface IListProductsParams {
   nameContains?: string;

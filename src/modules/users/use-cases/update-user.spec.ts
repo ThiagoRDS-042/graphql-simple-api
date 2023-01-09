@@ -1,9 +1,9 @@
 import { AppError } from "@shared/errors/app-error";
 
-import { makeUser } from "@test/factories/users-factory";
-import { InMemoryUsersRepository } from "@test/repositories/in-memory-users-repository";
+import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/in-memory-users-repository";
 
 import { Document } from "../entities/document";
+import { makeUser } from "../repositories/factories/users-factory";
 import { UpdateUser } from "./update-user";
 
 describe("Update customer", () => {

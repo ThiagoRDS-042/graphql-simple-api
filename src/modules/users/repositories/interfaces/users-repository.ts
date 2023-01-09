@@ -1,5 +1,5 @@
-import { IFindManyOptions } from "../dtos/find-many-options";
-import { User } from "../entities/user-entity";
+import { IFindManyOptions } from "../../dtos/find-many-options";
+import { User } from "../../entities/user-entity";
 
 export interface IUsersRepository {
   create(user: User): Promise<User>;

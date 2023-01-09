@@ -1,9 +1,9 @@
 import { AppError } from "@shared/errors/app-error";
 
-import { makeUser } from "@test/factories/users-factory";
-import { InMemoryProductsRepository } from "@test/repositories/in-memory-products-repository";
-import { InMemoryUsersRepository } from "@test/repositories/in-memory-users-repository";
+import { makeUser } from "@modules/users/repositories/factories/users-factory";
+import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/in-memory-users-repository";
 
+import { InMemoryProductsRepository } from "../repositories/in-memory/in-memory-products-repository";
 import { CreateProduct } from "./create-product";
 
 describe("Create product", () => {

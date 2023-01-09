@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { RoleType, User } from "../entities/user-entity";
-import { IUsersRepository } from "../repositories/users-repository";
+import { IUsersRepository } from "../repositories/interfaces/users-repository";
 
 interface IListUsersParams {
   emailContains?: string;

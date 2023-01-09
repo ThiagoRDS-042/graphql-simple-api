@@ -1,5 +1,5 @@
-import { IFindManyOptions } from "../dtos/find-many-options";
-import { Product } from "../entities/product-entity";
+import { IFindManyOptions } from "../../dtos/find-many-options";
+import { Product } from "../../entities/product-entity";
 
 export interface IProductsRepository {
   create(product: Product): Promise<Product>;

@@ -1,6 +1,6 @@
 import { IFindManyOptions } from "@modules/users/dtos/find-many-options";
 import { User } from "@modules/users/entities/user-entity";
-import { IUsersRepository } from "@modules/users/repositories/users-repository";
+import { IUsersRepository } from "@modules/users/repositories/interfaces/users-repository";
 
 export class InMemoryUsersRepository implements IUsersRepository {
   public users: User[] = [];

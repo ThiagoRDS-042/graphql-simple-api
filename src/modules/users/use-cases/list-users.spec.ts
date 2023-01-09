@@ -1,6 +1,6 @@
-import { makeUser } from "@test/factories/users-factory";
-import { InMemoryUsersRepository } from "@test/repositories/in-memory-users-repository";
+import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/in-memory-users-repository";
 
+import { makeUser } from "../repositories/factories/users-factory";
 import { ListUsers } from "./list-users";
 
 describe("List users", () => {

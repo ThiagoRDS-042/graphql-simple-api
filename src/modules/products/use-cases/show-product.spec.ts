@@ -1,8 +1,7 @@
 import { AppError } from "@shared/errors/app-error";
 
-import { makeProduct } from "@test/factories/products-factory";
-import { InMemoryProductsRepository } from "@test/repositories/in-memory-products-repository";
-
+import { makeProduct } from "../repositories/factories/products-factory";
+import { InMemoryProductsRepository } from "../repositories/in-memory/in-memory-products-repository";
 import { ShowProduct } from "./show-product";
 
 describe("Show product", () => {

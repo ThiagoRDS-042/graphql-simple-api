@@ -1,10 +1,10 @@
 import { AppError } from "@shared/errors/app-error";
 
-import { makeProduct } from "@test/factories/products-factory";
-import { makeStock } from "@test/factories/stocks-factory";
-import { InMemoryProductsRepository } from "@test/repositories/in-memory-products-repository";
-import { InMemoryStocksRepository } from "@test/repositories/in-memory-stocks-repository";
+import { makeStock } from "@modules/stocks/repositories/factories/stocks-factory";
+import { InMemoryStocksRepository } from "@modules/stocks/repositories/in-memory/in-memory-stocks-repository";
 
+import { makeProduct } from "../repositories/factories/products-factory";
+import { InMemoryProductsRepository } from "../repositories/in-memory/in-memory-products-repository";
 import { DeleteProduct } from "./delete-product";
 
 describe("Delete product", () => {

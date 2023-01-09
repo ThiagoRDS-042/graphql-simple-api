@@ -2,10 +2,10 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/app-error";
 
-import { IProductsRepository } from "@modules/products/repositories/products-repository";
+import { IProductsRepository } from "@modules/products/repositories/interfaces/products-repository";
 
 import { Stock } from "../entities/stock-entity";
-import { IStocksRepository } from "../repositories/stocks-repository";
+import { IStocksRepository } from "../repositories/interfaces/stocks-repository";
 
 interface ICreateStockParams {
   amount: number;

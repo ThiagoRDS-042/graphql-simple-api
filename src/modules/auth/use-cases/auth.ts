@@ -5,7 +5,7 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@shared/errors/app-error";
 
 import { JwtConfig } from "@config/jwt-config";
-import { IUsersRepository } from "@modules/users/repositories/users-repository";
+import { IUsersRepository } from "@modules/users/repositories/interfaces/users-repository";
 
 interface IAuthParams {
   email: string;

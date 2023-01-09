@@ -2,9 +2,9 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/app-error";
 
-import { IStocksRepository } from "@modules/stocks/repositories/stocks-repository";
+import { IStocksRepository } from "@modules/stocks/repositories/interfaces/stocks-repository";
 
-import { IProductsRepository } from "../repositories/products-repository";
+import { IProductsRepository } from "../repositories/interfaces/products-repository";
 
 interface IDeleteProductParams {
   productId: string;

@@ -1,6 +1,5 @@
-import { makeProduct } from "@test/factories/products-factory";
-import { InMemoryProductsRepository } from "@test/repositories/in-memory-products-repository";
-
+import { makeProduct } from "../repositories/factories/products-factory";
+import { InMemoryProductsRepository } from "../repositories/in-memory/in-memory-products-repository";
 import { ListProducts } from "./list-products";
 
 describe("List products", () => {

@@ -6,7 +6,7 @@ import { Document } from "../entities/document";
 import { Password } from "../entities/password";
 import { Phone } from "../entities/phone";
 import { RoleType, User } from "../entities/user-entity";
-import { IUsersRepository } from "../repositories/users-repository";
+import { IUsersRepository } from "../repositories/interfaces/users-repository";
 
 interface ICreateUserParams {
   email: string;

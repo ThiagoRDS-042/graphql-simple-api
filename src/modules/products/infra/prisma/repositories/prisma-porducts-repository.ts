@@ -3,7 +3,7 @@ import { parseNullableVariable } from "@shared/utils/parse-nullable-variable";
 
 import { IFindManyOptions } from "@modules/products/dtos/find-many-options";
 import { Product } from "@modules/products/entities/product-entity";
-import { IProductsRepository } from "@modules/products/repositories/products-repository";
+import { IProductsRepository } from "@modules/products/repositories/interfaces/products-repository";
 
 import { PrismaProductMapper } from "../mappers/prisma-product-mapper";
 

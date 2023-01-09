@@ -2,10 +2,10 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/app-error";
 
-import { IUsersRepository } from "@modules/users/repositories/users-repository";
+import { IUsersRepository } from "@modules/users/repositories/interfaces/users-repository";
 
 import { CategoryType, Product } from "../entities/product-entity";
-import { IProductsRepository } from "../repositories/products-repository";
+import { IProductsRepository } from "../repositories/interfaces/products-repository";
 
 interface ICreateProductParams {
   name: string;

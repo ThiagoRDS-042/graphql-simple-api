@@ -1,6 +1,6 @@
 import { AppError } from "@shared/errors/app-error";
 
-import { InMemoryUsersRepository } from "@test/repositories/in-memory-users-repository";
+import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/in-memory-users-repository";
 
 import { CreateUser } from "./create-user";
 

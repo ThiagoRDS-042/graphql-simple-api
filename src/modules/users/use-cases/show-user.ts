@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@shared/errors/app-error";
 
 import { User } from "../entities/user-entity";
-import { IUsersRepository } from "../repositories/users-repository";
+import { IUsersRepository } from "../repositories/interfaces/users-repository";
 
 interface IShowUserParams {
   userId: string;

@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/app-error";
 
-import { IUsersRepository } from "../repositories/users-repository";
+import { IUsersRepository } from "../repositories/interfaces/users-repository";
 
 interface IDeleteUserParams {
   userId: string;

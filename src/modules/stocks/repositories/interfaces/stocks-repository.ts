@@ -1,5 +1,5 @@
-import { IFindMany } from "../dtos/find-many";
-import { Stock } from "../entities/stock-entity";
+import { IFindMany } from "../../dtos/find-many";
+import { Stock } from "../../entities/stock-entity";
 
 export interface IStocksRepository {
   create(stock: Stock): Promise<Stock>;

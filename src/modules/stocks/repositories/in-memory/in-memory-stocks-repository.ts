@@ -1,7 +1,7 @@
 import { Product } from "@modules/products/entities/product-entity";
 import { IFindMany } from "@modules/stocks/dtos/find-many";
 import { Stock } from "@modules/stocks/entities/stock-entity";
-import { IStocksRepository } from "@modules/stocks/repositories/stocks-repository";
+import { IStocksRepository } from "@modules/stocks/repositories/interfaces/stocks-repository";
 
 export interface IStock extends Stock {
   product?: Product;

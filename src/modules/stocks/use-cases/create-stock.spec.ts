@@ -1,9 +1,9 @@
 import { AppError } from "@shared/errors/app-error";
 
-import { makeProduct } from "@test/factories/products-factory";
-import { InMemoryProductsRepository } from "@test/repositories/in-memory-products-repository";
-import { InMemoryStocksRepository } from "@test/repositories/in-memory-stocks-repository";
+import { makeProduct } from "@modules/products/repositories/factories/products-factory";
+import { InMemoryProductsRepository } from "@modules/products/repositories/in-memory/in-memory-products-repository";
 
+import { InMemoryStocksRepository } from "../repositories/in-memory/in-memory-stocks-repository";
 import { CreateStock } from "./create-stock";
 
 describe("Create stock", () => {
