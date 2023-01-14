@@ -106,8 +106,7 @@ export class UserResolver {
     return true;
   }
 
-  @UseMiddleware(ensureAuthenticated)
-  @UseMiddleware(ensureHasRole(["ADMIN"]))
+  @UseMiddleware(ensureAuthenticated, ensureHasRole(["ADMIN"]))
   @Query(() => [UserModel])
   async listUsers(
     @Arg("listUsersInput", { nullable: true }) input: ListUsersInput,

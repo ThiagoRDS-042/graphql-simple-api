@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 
+import { StockModel } from "@modules/stocks/infra/http/graphql/models/stock-model";
 import { UserModel } from "@modules/users/infra/http/graphql/models/user-model";
 
 export enum ProductCategory {
@@ -34,6 +35,9 @@ export class ProductModel {
 
   @Field(() => UserModel)
   user: UserModel;
+
+  @Field(() => StockModel, { nullable: true })
+  stock: StockModel;
 
   userId: string;
 

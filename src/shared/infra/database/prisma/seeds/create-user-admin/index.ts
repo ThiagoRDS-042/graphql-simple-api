@@ -9,7 +9,7 @@ export class CreateUserAdmin {
     await this.execute();
   }
 
-  private async execute(): Promise<void | Error> {
+  private async execute(): Promise<void> {
     const prismaUsersRepository = new PrismaUsersRepository();
 
     const userAdminAlreadyExists = await prismaUsersRepository.findByEmail(

@@ -38,6 +38,18 @@ export class CreateStock {
       throw new AppError("Product does not exist", "PRODUCT_NOT_FOUND", 404);
     }
 
+    const stockAlreadyExist = await this.stocksRepository.findByProductId(
+      productId,
+    );
+
+    if (stockAlreadyExist !== null) {
+      throw new AppError(
+        "Stock on product already exist",
+        "STOCK_ON_PRODUCT_ALREADY_EXIST",
+        409,
+      );
+    }
+
     if (productExist.userId !== userId) {
       throw new AppError("Forbidden", "FORBIDDEN", 404);
     }

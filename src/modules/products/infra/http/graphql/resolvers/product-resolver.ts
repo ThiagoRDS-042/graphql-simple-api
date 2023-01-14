@@ -25,6 +25,11 @@ import {
   ListProducts,
   ShowProduct,
 } from "@modules/products/use-cases";
+import { StockModel } from "@modules/stocks/infra/http/graphql/models/stock-model";
+import {
+  IStockViewModelResponse,
+  StockViewModel,
+} from "@modules/stocks/infra/http/view-models/stock-view-model";
 import { UserModel } from "@modules/users/infra/http/graphql/models/user-model";
 import {
   IUserViewModelResponse,
@@ -44,8 +49,7 @@ import { ProductCategory, ProductModel } from "../models/product-model";
 
 @Resolver(() => ProductModel)
 export class ProductResolver {
-  @UseMiddleware(ensureAuthenticated)
-  @UseMiddleware(ensureHasRole(["SELLER"]))
+  @UseMiddleware(ensureAuthenticated, ensureHasRole(["SELLER"]))
   @Mutation(() => ProductModel)
   async createProduct(
     @Arg("createProductInput") input: CreateProductInput,
@@ -67,8 +71,7 @@ export class ProductResolver {
     return ProductViewModel.toHTTP(product);
   }
 
-  @UseMiddleware(ensureAuthenticated)
-  @UseMiddleware(ensureHasRole(["SELLER"]))
+  @UseMiddleware(ensureAuthenticated, ensureHasRole(["SELLER"]))
   @Mutation(() => ProductModel)
   async updateProduct(
     @Arg("updateProductInput") input: UpdateProductInput,
@@ -91,8 +94,7 @@ export class ProductResolver {
     return ProductViewModel.toHTTP(product);
   }
 
-  @UseMiddleware(ensureAuthenticated)
-  @UseMiddleware(ensureHasRole(["SELLER"]))
+  @UseMiddleware(ensureAuthenticated, ensureHasRole(["SELLER"]))
   @Mutation(() => Boolean)
   async deleteProduct(
     @Arg("productId") productId: string,
@@ -163,5 +165,23 @@ export class ProductResolver {
     const user = await userDataSource.getById(userId);
 
     return UserViewModel.toHTTP(user);
+  }
+
+  @FieldResolver(() => StockModel)
+  async stock(
+    @Root() productModel: ProductModel,
+    @Ctx() context: IContext,
+  ): Promise<IStockViewModelResponse> {
+    const { stockDataSource } = context.dataSources;
+
+    const { id } = productModel;
+
+    const stock = await stockDataSource.getByProductId(id);
+
+    if (stock === null) {
+      return stock;
+    }
+
+    return StockViewModel.toHTTP(stock);
   }
 }

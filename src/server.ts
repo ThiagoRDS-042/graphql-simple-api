@@ -12,12 +12,14 @@ import { context } from "@shared/infra/http/graphql/context";
 import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/auth-resolver";
 import { ProductDataSource } from "@modules/products/infra/http/graphql/data-source";
 import { ProductResolver } from "@modules/products/infra/http/graphql/resolvers/product-resolver";
+import { StockDataSource } from "@modules/stocks/infra/http/graphql/data-source";
+import { StockResolver } from "@modules/stocks/infra/http/graphql/resolvers/stock-resolver";
 import { UserDataSource } from "@modules/users/infra/http/graphql/data-source";
 import { UserResolver } from "@modules/users/infra/http/graphql/resolvers/user-resolver";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [UserResolver, AuthResolver, ProductResolver],
+    resolvers: [UserResolver, AuthResolver, ProductResolver, StockResolver],
     emitSchemaFile: path.resolve(__dirname, "schema.gql"),
   });
 
@@ -34,6 +36,7 @@ const bootstrap = async () => {
     dataSources: () => ({
       userDataSource: new UserDataSource(),
       productDataSource: new ProductDataSource(),
+      stockDataSource: new StockDataSource(),
     }),
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({

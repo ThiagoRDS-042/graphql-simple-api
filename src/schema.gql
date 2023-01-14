@@ -15,6 +15,11 @@ input CreateProductInput {
   price: Float!
 }
 
+input CreateStockInput {
+  amount: Float!
+  productId: ID!
+}
+
 input CreateUserInput {
   document: String!
   email: String!
@@ -46,11 +51,13 @@ input ListUsersInput {
 type Mutation {
   auth(authInput: AuthInput!): Boolean!
   createProduct(createProductInput: CreateProductInput!): ProductModel!
+  createStock(createStockInput: CreateStockInput!): StockModel!
   createUser(createUserInput: CreateUserInput!): UserModel!
   deleteProduct(productId: String!): Boolean!
   deleteUser: Boolean!
   logout: Boolean!
   updateProduct(updateProductInput: UpdateProductInput!): ProductModel!
+  updateStock(updateStockInput: UpdateStockInput!): StockModel!
   updateUser(updateUserInput: UpdateUserInput!): UserModel!
 }
 
@@ -71,15 +78,27 @@ type ProductModel {
   id: ID!
   name: String!
   price: Float!
+  stock: StockModel
   updatedAt: DateTime!
   user: UserModel!
 }
 
 type Query {
   listProducts(listProductsInput: ListProductsInput): [ProductModel!]!
+  listStocks: [StockModel!]!
   listUsers(listUsersInput: ListUsersInput): [UserModel!]!
   showProduct(productId: String!): ProductModel!
+  showStockByProductId(productId: String!): StockModel!
   showUser: UserModel!
+}
+
+type StockModel {
+  amount: Float!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  product: ProductModel!
+  updatedAt: DateTime!
 }
 
 input UpdateProductInput {
@@ -87,6 +106,11 @@ input UpdateProductInput {
   description: String
   name: String!
   price: Float!
+  productId: ID!
+}
+
+input UpdateStockInput {
+  amount: Float!
   productId: ID!
 }
 

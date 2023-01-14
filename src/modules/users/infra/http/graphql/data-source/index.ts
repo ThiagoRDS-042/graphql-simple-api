@@ -16,10 +16,10 @@ export class UserDataSource extends BaseDataSource {
   }
 
   async getById(userId: string): Promise<User> {
-    return this.userLoader.load(userId);
+    return this.getByIdLoader.load(userId);
   }
 
-  private userLoader = new DataLoader(async (userIds: string[]) => {
+  private getByIdLoader = new DataLoader(async (userIds: string[]) => {
     const users = await this.prisma.user.findMany({
       where: {
         id: {

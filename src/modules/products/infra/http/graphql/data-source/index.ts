@@ -16,10 +16,14 @@ export class ProductDataSource extends BaseDataSource {
   }
 
   async listByUserId(userId: string): Promise<Product[]> {
-    return this.productLoader.load(userId);
+    return this.listByUserIdLoader.load(userId);
   }
 
-  private productLoader = new DataLoader(async (userIds: string[]) => {
+  async getById(productId: string): Promise<Product> {
+    return this.getByIdLoader.load(productId);
+  }
+
+  private listByUserIdLoader = new DataLoader(async (userIds: string[]) => {
     const products = await this.prisma.product.findMany({
       where: {
         userId: {
@@ -32,6 +36,22 @@ export class ProductDataSource extends BaseDataSource {
       products
         .filter(product => product.userId === userId)
         .map(PrismaProductMapper.toDomain),
+    );
+  });
+
+  private getByIdLoader = new DataLoader(async (productIds: string[]) => {
+    const products = await this.prisma.product.findMany({
+      where: {
+        id: {
+          in: productIds,
+        },
+      },
+    });
+
+    return productIds.map(productId =>
+      PrismaProductMapper.toDomain(
+        products.find(product => product.id === productId),
+      ),
     );
   });
 }
