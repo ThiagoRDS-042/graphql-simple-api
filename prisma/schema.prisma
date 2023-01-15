@@ -20,18 +20,19 @@ enum Role {
 }
 
 model User {
-  id        String    @id
-  name      String
-  email     String    @unique
-  document  String    @unique
-  password  String
-  phone     String
-  role      Role
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  products  Product[]
-  Order     Order[]
+  id             String    @id
+  name           String
+  email          String    @unique
+  document       String    @unique
+  password       String
+  phone          String
+  role           Role
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+  products       Product[]
+  sellerOrders   Order[]   @relation("SellerOrders")
+  customerOrders Order[]   @relation("CustomerOrders")
 
   @@index([email])
   @@index([name])
@@ -82,18 +83,21 @@ model Stock {
 }
 
 model Order {
-  id        String    @id
-  price     Float
-  amount    Int
-  productId String    @map("product_id")
-  product   Product   @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Restrict)
-  userId    String    @map("user_id")
-  user      User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  id         String    @id
+  price      Float
+  amount     Int
+  productId  String    @map("product_id")
+  product    Product   @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  sellerId   String    @map("seller_id")
+  seller     User      @relation(name: "SellerOrders", fields: [sellerId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  customerId String    @map("customer_id")
+  customer   User      @relation(name: "CustomerOrders", fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  canceledAt DateTime? @map("canceled_at")
 
   @@index([productId])
-  @@index([userId])
+  @@index([sellerId])
+  @@index([customerId])
   @@map("orders")
 }

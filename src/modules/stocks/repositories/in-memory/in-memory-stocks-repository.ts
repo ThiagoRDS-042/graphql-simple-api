@@ -41,9 +41,11 @@ export class InMemoryStocksRepository implements IStocksRepository {
   public async findMany(options: IFindMany): Promise<Stock[]> {
     const { userIdEquals } = options;
 
-    const stocks = this.stocks.filter(
-      item => item.product.userId === userIdEquals && !item.deletedAt,
-    );
+    let stocks = this.stocks.filter(item => !item.deletedAt);
+
+    if (userIdEquals && stocks.length > 0) {
+      stocks = stocks.filter(item => item.product.userId === userIdEquals);
+    }
 
     return stocks;
   }

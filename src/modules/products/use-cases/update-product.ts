@@ -37,7 +37,11 @@ export class UpdateProduct {
     }
 
     if (productExists.userId !== userId) {
-      throw new AppError("User does not is owner", "USER_NOT_IS_OWNER", 403);
+      throw new AppError(
+        "User does not is owner of the product",
+        "USER_NOT_IS_OWNER",
+        403,
+      );
     }
 
     let product = Product.newProduct(

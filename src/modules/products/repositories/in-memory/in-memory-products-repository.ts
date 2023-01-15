@@ -39,14 +39,16 @@ export class InMemoryProductsRepository implements IProductsRepository {
     const { categoryEquals, nameContains, priceGte, priceLte, userIdEquals } =
       options;
 
-    let { products } = this;
+    let products = this.products.filter(item => !item.deletedAt);
 
     if (categoryEquals && products.length > 0) {
       products = products.filter(item => item.category === categoryEquals);
     }
 
     if (nameContains && products.length > 0) {
-      products = products.filter(item => item.name.includes(nameContains));
+      products = products.filter(item =>
+        item.name.toUpperCase().includes(nameContains.toUpperCase()),
+      );
     }
 
     if (userIdEquals && products.length > 0) {
@@ -59,10 +61,6 @@ export class InMemoryProductsRepository implements IProductsRepository {
 
     if (priceGte && products.length > 0) {
       products = products.filter(item => item.price >= priceGte);
-    }
-
-    if (products.length > 0) {
-      products = products.filter(item => !item.deletedAt);
     }
 
     return products;

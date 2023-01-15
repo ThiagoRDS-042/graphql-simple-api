@@ -30,22 +30,22 @@ export class InMemoryUsersRepository implements IUsersRepository {
   public async findMany(options: IFindManyOptions): Promise<User[]> {
     const { emailContains, nameContains, roleEquals } = options;
 
-    let { users } = this;
+    let users = this.users.filter(item => !item.deletedAt);
 
     if (emailContains && users.length > 0) {
-      users = users.filter(item => item.email === emailContains);
+      users = users.filter(item =>
+        item.email.toUpperCase().includes(emailContains.toUpperCase()),
+      );
     }
 
     if (nameContains && users.length > 0) {
-      users = users.filter(item => item.name === nameContains);
+      users = users.filter(item =>
+        item.name.toUpperCase().includes(nameContains.toUpperCase()),
+      );
     }
 
     if (roleEquals && users.length > 0) {
       users = users.filter(item => item.role === roleEquals);
-    }
-
-    if (users.length > 0) {
-      users = users.filter(item => !item.deletedAt);
     }
 
     return users;

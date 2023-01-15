@@ -59,10 +59,11 @@ FASHION FASHION
     Float price  
     Int amount  
     String product_id  
-    String user_id  
+    String seller_id  
+    String customer_id  
     DateTime created_at  
     DateTime updated_at  
-    DateTime deleted_at  "nullable"
+    DateTime canceled_at  "nullable"
     }
   
     users o|--|| Role : "enum:role"
@@ -70,5 +71,6 @@ FASHION FASHION
     products o{--|| users : "user"
     stocks o|--|| products : "product"
     orders o{--|| products : "product"
-    orders o{--|| users : "user"
+    orders o{--|| users : "seller"
+    orders o{--|| users : "customer"
 ```
