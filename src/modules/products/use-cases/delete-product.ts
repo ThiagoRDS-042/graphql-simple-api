@@ -31,7 +31,7 @@ export class DeleteProduct {
     }
 
     if (product.userId !== userId) {
-      throw new AppError("Forbidden", "FORBIDDEN", 403);
+      throw new AppError("User does not is owner", "USER_NOT_IS_OWNER", 403);
     }
 
     product.delete();

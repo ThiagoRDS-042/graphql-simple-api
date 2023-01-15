@@ -30,7 +30,7 @@ export class PrismaStocksRepository implements IStocksRepository {
 
   public async findByProductId(productId: string): Promise<Stock | null> {
     const stock = await prisma.stock.findFirst({
-      where: { productId, deletedAt: null },
+      where: { productId: { equals: productId }, deletedAt: { equals: null } },
     });
 
     if (!stock) {
@@ -44,7 +44,10 @@ export class PrismaStocksRepository implements IStocksRepository {
     const { userIdEquals } = options;
 
     const stocks = await prisma.stock.findMany({
-      where: { product: { userId: userIdEquals }, deletedAt: null },
+      where: {
+        product: { userId: { equals: userIdEquals } },
+        deletedAt: { equals: null },
+      },
     });
 
     return stocks.map(PrismaStockMapper.toDomain);

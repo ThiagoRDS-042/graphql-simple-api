@@ -45,7 +45,7 @@ export class UpdateStock {
     }
 
     if (productExist.userId !== userId) {
-      throw new AppError("Forbidden", "FORBIDDEN", 404);
+      throw new AppError("User does not is owner", "USER_NOT_IS_OWNER", 403);
     }
 
     let stock = Stock.newStock(

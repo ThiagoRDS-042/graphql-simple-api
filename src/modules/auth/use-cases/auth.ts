@@ -38,6 +38,10 @@ export class Auth {
       throw new AppError("Invalid credentials", "INVALID_CREDENTIALS", 400);
     }
 
+    if (user.deletedAt !== null) {
+      throw new AppError("User has been deleted", "USER_HAS_BEEN_DELETED", 403);
+    }
+
     const { algorithm, expiresIn, secretKey } = JwtConfig.newJwtConfig();
 
     const payload = {

@@ -72,7 +72,13 @@ export class PrismaUsersRepository implements IUsersRepository {
   public async findByEmail(email: string): Promise<User | null> {
     const user = await prisma.user.findFirst({
       where: {
-        AND: [{ email, deletedAt: { equals: null } }],
+        AND: [
+          {
+            email: {
+              equals: email,
+            },
+          },
+        ],
       },
     });
 
@@ -86,7 +92,13 @@ export class PrismaUsersRepository implements IUsersRepository {
   public async findByDocument(document: string): Promise<User | null> {
     const user = await prisma.user.findFirst({
       where: {
-        AND: [{ document, deletedAt: { equals: null } }],
+        AND: [
+          {
+            document: {
+              equals: document,
+            },
+          },
+        ],
       },
     });
 
