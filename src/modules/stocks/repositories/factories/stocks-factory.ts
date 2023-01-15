@@ -6,6 +6,9 @@ export const makeStock = (override: Override = {}): Stock => {
   return Stock.newStock({
     amount: 12,
     productId: "example-user-id",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
     ...override,
   });
 };

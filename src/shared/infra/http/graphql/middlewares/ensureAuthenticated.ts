@@ -6,11 +6,11 @@ import { validateToken } from "@shared/utils/validate-token";
 
 import { CookieConfig } from "@config/cookie-config";
 import { RoleType } from "@modules/users/entities/user-entity";
+import { PrismaUsersRepository } from "@modules/users/infra/prisma/repositories/prisma-users-repository";
 
 import { IContext } from "../context";
 
 interface IUser {
-  userName: string;
   userId: string;
   userRole: RoleType;
 }
@@ -37,7 +37,20 @@ export const ensureAuthenticated: MiddlewareFn<IContextMiddleware> = async (
     throw new AppError("Token must be not found", "TOKEN_NOT_FOUND", 401);
   }
 
-  context.user = validateToken(accessToken);
+  const { userId } = validateToken(accessToken);
+
+  const prismaUsersRepository = new PrismaUsersRepository();
+
+  const user = await prismaUsersRepository.findById(userId);
+
+  if (!user) {
+    throw new AppError("Invalid user", "INVALID_USER", 401);
+  }
+
+  context.user = {
+    userId: user.id,
+    userRole: user.role,
+  };
 
   return next();
 };

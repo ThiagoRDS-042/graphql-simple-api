@@ -9,7 +9,7 @@ export interface IUserViewModelResponse {
   role: string;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt: Date;
+  deletedAt: Date | null;
 }
 
 export class UserViewModel {

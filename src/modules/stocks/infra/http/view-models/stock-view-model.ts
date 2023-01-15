@@ -5,8 +5,8 @@ export interface IStockViewModelResponse {
   amount: number;
   productId: string;
   createdAt: Date;
-  deletedAt: Date;
   updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 export class StockViewModel {

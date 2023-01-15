@@ -12,6 +12,9 @@ export const makeProduct = (override: Override = {}): Product => {
     price: 12.25,
     userId: "example-user-id",
     description: "This is the description",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
     ...override,
   });
 };

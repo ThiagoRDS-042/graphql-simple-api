@@ -45,7 +45,6 @@ export class Auth {
     const { algorithm, expiresIn, secretKey } = JwtConfig.newJwtConfig();
 
     const payload = {
-      userName: user.name,
       userId: user.id,
       userRole: user.role,
     };

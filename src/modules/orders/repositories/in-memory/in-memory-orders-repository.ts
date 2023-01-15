@@ -33,12 +33,8 @@ export class InMemoryOrdersRepository implements IOrdersRepository {
   }
 
   async findMany(options: IFindManyOptions): Promise<Order[]> {
-    const {
-      customerIdEquals,
-      isCanceled = false,
-      productIdEquals,
-      sellerIdEquals,
-    } = options;
+    const { customerIdEquals, isCanceled, productIdEquals, sellerIdEquals } =
+      options;
 
     let { orders } = this;
 
@@ -54,11 +50,9 @@ export class InMemoryOrdersRepository implements IOrdersRepository {
       orders = orders.filter(item => item.sellerId === sellerIdEquals);
     }
 
-    if (isCanceled && orders.length > 0) {
+    if (isCanceled !== undefined && isCanceled && orders.length > 0) {
       orders = orders.filter(item => item.canceledAt);
-    }
-
-    if (!isCanceled && orders.length > 0) {
+    } else if (isCanceled !== undefined && !isCanceled && orders.length > 0) {
       orders = orders.filter(item => !item.canceledAt);
     }
 

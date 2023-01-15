@@ -7,7 +7,6 @@ import { RoleType } from "@modules/users/entities/user-entity";
 import { IContext } from "../context";
 
 interface IUser {
-  userName: string;
   userId: string;
   userRole: RoleType;
 }

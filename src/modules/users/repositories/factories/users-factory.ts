@@ -13,6 +13,9 @@ export const makeUser = (override: Override = {}): User => {
     phone: Phone.newPhone("(12) 1.1234-5678"),
     document: Document.newDocument("123.456.789-10"),
     role: "CUSTOMER",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
     ...override,
   });
 };

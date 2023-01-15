@@ -66,14 +66,6 @@ export class CreateOrder {
       throw new AppError("Customer does not exist", "CUSTOMER_NOT_FOUND", 404);
     }
 
-    if (customerExist.role !== "CUSTOMER") {
-      throw new AppError(
-        "User does not is a customer",
-        "USER_NOT_IS_CUSTOMER",
-        403,
-      );
-    }
-
     const price = productExist.price * amount;
 
     let order = Order.newOrder({

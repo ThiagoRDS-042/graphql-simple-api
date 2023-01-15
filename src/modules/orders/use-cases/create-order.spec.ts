@@ -140,35 +140,4 @@ describe("Create order", () => {
       }),
     ).rejects.toThrow(AppError);
   });
-
-  it("should not be able to create a new order with customer non has a role customer", async () => {
-    const { id: customerId } = await inMemoryUsersRepository.create(
-      makeUser({ role: "SELLER" }),
-    );
-
-    const { id: sellerId } = await inMemoryUsersRepository.create(
-      makeUser({ role: "SELLER" }),
-    );
-
-    const { id: productId } = await inMemoryProductsRepository.create(
-      makeProduct({
-        userId: sellerId,
-      }),
-    );
-
-    await inMemoryStocksRepository.create(
-      makeStock({
-        productId,
-        amount: 2,
-      }),
-    );
-
-    await expect(
-      createOrder.execute({
-        amount: 2,
-        customerId,
-        productId,
-      }),
-    ).rejects.toThrow(AppError);
-  });
 });

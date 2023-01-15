@@ -14,7 +14,11 @@ const config: Config = {
     prefix: "<rootDir>/",
   }),
   setupFilesAfterEnv: ["<rootDir>/test/utils/jest-after-env.ts"],
-  collectCoverageFrom: ["./src/**/use-cases/*-*.ts", "./src/**/entities/*.ts"],
+  collectCoverageFrom: [
+    "./src/**/use-cases/*.ts",
+    "!./src/**/use-cases/index.ts",
+    "./src/**/entities/*.ts",
+  ],
   coverageDirectory: "./coverage",
   collectCoverage: true,
   testEnvironment: "node",
