@@ -1,4 +1,5 @@
 import { prisma } from "@shared/infra/database/prisma/prisma-client";
+import { parseNullableVariable } from "@shared/utils/parse-nullable-variable";
 
 import { IFindManyOptions } from "@modules/orders/dtos/find-many-options";
 import { Order } from "@modules/orders/entities/order-entity";
@@ -43,8 +44,10 @@ export class PrismaOrdersRepository implements IOrdersRepository {
   }
 
   async findMany(options: IFindManyOptions): Promise<Order[]> {
-    const { customerIdEquals, isCanceled, productIdEquals, sellerIdEquals } =
-      options;
+    const customerIdEquals = parseNullableVariable(options.customerIdEquals);
+    const isCanceled = parseNullableVariable(options.isCanceled);
+    const productIdEquals = parseNullableVariable(options.productIdEquals);
+    const sellerIdEquals = parseNullableVariable(options.sellerIdEquals);
 
     let canceledAt = undefined;
 

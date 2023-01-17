@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 
+import { OrderModel } from "@modules/orders/infra/http/graphql/models/order-model";
 import { StockModel } from "@modules/stocks/infra/http/graphql/models/stock-model";
 import { UserModel } from "@modules/users/infra/http/graphql/models/user-model";
 
@@ -49,4 +50,7 @@ export class ProductModel {
 
   @Field(() => Date, { nullable: true })
   deletedAt?: Date | null;
+
+  @Field(() => [OrderModel])
+  orders: OrderModel[];
 }

@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 
+import { OrderModel } from "@modules/orders/infra/http/graphql/models/order-model";
 import { ProductModel } from "@modules/products/infra/http/graphql/models/product-model";
 
 enum UserRoleModel {
@@ -44,4 +45,7 @@ export class UserModel {
 
   @Field(() => Date, { nullable: true })
   deletedAt?: Date | null;
+
+  @Field(() => [OrderModel])
+  orders: OrderModel[];
 }

@@ -1,6 +1,16 @@
 import { container } from "tsyringe";
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+  UseMiddleware,
+} from "type-graphql";
 
+import { IContext } from "@shared/infra/http/graphql/context";
 import {
   CurrentUser,
   ICurrentUser,
@@ -15,6 +25,15 @@ import {
   ShowOrder,
   CancelOrder,
 } from "@modules/orders/use-cases";
+import {
+  IProductViewModelResponse,
+  ProductViewModel,
+} from "@modules/products/infra/http/view-models/product-view-model";
+import { UserModel } from "@modules/users/infra/http/graphql/models/user-model";
+import {
+  IUserViewModelResponse,
+  UserViewModel,
+} from "@modules/users/infra/http/view-models/user-view-model";
 
 import {
   IOrderViewModelResponse,
@@ -73,10 +92,9 @@ export class OrderResolver {
   }
 
   @UseMiddleware(ensureAuthenticated, ensureHasRole(["CUSTOMER"]))
-  @Query(() => [Boolean])
+  @Mutation(() => Boolean)
   async cancelOrder(
-    @Arg("orderId")
-    orderId: string,
+    @Arg("orderId") orderId: string,
     @CurrentUser() currentUser: ICurrentUser,
   ): Promise<boolean> {
     const { userId: customerId } = currentUser;
@@ -196,5 +214,47 @@ export class OrderResolver {
     });
 
     return OrderViewModel.toHTTP(order);
+  }
+
+  @FieldResolver(() => UserModel)
+  async customer(
+    @Root() orderModel: OrderModel,
+    @Ctx() context: IContext,
+  ): Promise<IUserViewModelResponse> {
+    const { customerId } = orderModel;
+
+    const { userDataSource } = context.dataSources;
+
+    const customer = await userDataSource.getById(customerId);
+
+    return UserViewModel.toHTTP(customer);
+  }
+
+  @FieldResolver(() => UserModel)
+  async seller(
+    @Root() orderModel: OrderModel,
+    @Ctx() context: IContext,
+  ): Promise<IUserViewModelResponse> {
+    const { sellerId } = orderModel;
+
+    const { userDataSource } = context.dataSources;
+
+    const seller = await userDataSource.getById(sellerId);
+
+    return UserViewModel.toHTTP(seller);
+  }
+
+  @FieldResolver(() => UserModel)
+  async product(
+    @Root() orderModel: OrderModel,
+    @Ctx() context: IContext,
+  ): Promise<IProductViewModelResponse> {
+    const { productId } = orderModel;
+
+    const { productDataSource } = context.dataSources;
+
+    const product = await productDataSource.getById(productId);
+
+    return ProductViewModel.toHTTP(product);
   }
 }

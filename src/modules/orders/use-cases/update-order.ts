@@ -47,6 +47,10 @@ export class UpdateOrder {
       throw new AppError("Order does not exist", "ORDER_NOT_FOUND", 404);
     }
 
+    if (orderExist.canceledAt !== null) {
+      throw new AppError("Order has canceled", "ORDER_HAS_CANCELED", 403);
+    }
+
     if (orderExist.customerId !== customerId) {
       throw new AppError(
         "Customer does not is owner of the order",

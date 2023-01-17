@@ -8,18 +8,23 @@ import { buildSchema } from "type-graphql";
 
 import { formatError } from "@shared/errors/format-error";
 import { context } from "@shared/infra/http/graphql/context";
+import { dataSources } from "@shared/infra/http/graphql/data-source";
 
 import { AuthResolver } from "@modules/auth/infra/http/graphql/resolvers/auth-resolver";
-import { ProductDataSource } from "@modules/products/infra/http/graphql/data-source";
+import { OrderResolver } from "@modules/orders/infra/http/graphql/resolvers/order-resolver";
 import { ProductResolver } from "@modules/products/infra/http/graphql/resolvers/product-resolver";
-import { StockDataSource } from "@modules/stocks/infra/http/graphql/data-source";
 import { StockResolver } from "@modules/stocks/infra/http/graphql/resolvers/stock-resolver";
-import { UserDataSource } from "@modules/users/infra/http/graphql/data-source";
 import { UserResolver } from "@modules/users/infra/http/graphql/resolvers/user-resolver";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [UserResolver, AuthResolver, ProductResolver, StockResolver],
+    resolvers: [
+      UserResolver,
+      AuthResolver,
+      ProductResolver,
+      StockResolver,
+      OrderResolver,
+    ],
     emitSchemaFile: path.resolve(__dirname, "schema.gql"),
   });
 
@@ -33,11 +38,7 @@ const bootstrap = async () => {
     cache: "bounded",
     context,
     formatError,
-    dataSources: () => ({
-      userDataSource: new UserDataSource(),
-      productDataSource: new ProductDataSource(),
-      stockDataSource: new StockDataSource(),
-    }),
+    dataSources,
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({
         embed: true,

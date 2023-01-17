@@ -19,6 +19,11 @@ import { ensureAuthenticated } from "@shared/infra/http/graphql/middlewares/ensu
 import { ensureHasRole } from "@shared/infra/http/graphql/middlewares/ensureHasRole";
 
 import { CookieConfig } from "@config/cookie-config";
+import { OrderModel } from "@modules/orders/infra/http/graphql/models/order-model";
+import {
+  IOrderViewModelResponse,
+  OrderViewModel,
+} from "@modules/orders/infra/http/view-models/order-view-model";
 import { ProductModel } from "@modules/products/infra/http/graphql/models/product-model";
 import {
   IProductViewModelResponse,
@@ -153,10 +158,24 @@ export class UserResolver {
   ): Promise<IProductViewModelResponse[]> {
     const { productDataSource } = context.dataSources;
 
-    const { id: userId } = userModel;
+    const { id } = userModel;
 
-    const products = await productDataSource.listByUserId(userId);
+    const products = await productDataSource.listByUserId(id);
 
     return products.map(ProductViewModel.toHTTP);
+  }
+
+  @FieldResolver(() => [OrderModel])
+  async orders(
+    @Root() userModel: UserModel,
+    @Ctx() context: IContext,
+  ): Promise<IOrderViewModelResponse[]> {
+    const { orderDataSource } = context.dataSources;
+
+    const { id } = userModel;
+
+    const orders = await orderDataSource.listByUserId(id);
+
+    return orders.map(OrderViewModel.toHTTP);
   }
 }

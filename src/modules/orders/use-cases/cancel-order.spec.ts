@@ -64,6 +64,45 @@ describe("Cancel order", () => {
   });
 
   it("should not be able to cancel a non existing order", async () => {
+    const { id: customerId } = await inMemoryUsersRepository.create(
+      makeUser({ role: "CUSTOMER" }),
+    );
+
+    const { id: sellerId } = await inMemoryUsersRepository.create(
+      makeUser({ role: "SELLER" }),
+    );
+
+    const { id: productId } = await inMemoryProductsRepository.create(
+      makeProduct({
+        userId: sellerId,
+      }),
+    );
+
+    await inMemoryStocksRepository.create(
+      makeStock({
+        productId,
+        amount: 2,
+      }),
+    );
+
+    const { id: orderId } = await inMemoryOrdersRepository.create(
+      makeOrder({ customerId, productId, sellerId, amount: 1 }),
+    );
+
+    await cancelOrder.execute({
+      orderId,
+      customerId: customerId,
+    });
+
+    await expect(
+      cancelOrder.execute({
+        orderId,
+        customerId: customerId,
+      }),
+    ).rejects.toThrow(AppError);
+  });
+
+  it("should not be able to cancel a order that is already cancelled.", async () => {
     await expect(
       cancelOrder.execute({
         orderId: "non-existing-order",

@@ -18,6 +18,11 @@ import {
 import { ensureAuthenticated } from "@shared/infra/http/graphql/middlewares/ensureAuthenticated";
 import { ensureHasRole } from "@shared/infra/http/graphql/middlewares/ensureHasRole";
 
+import { OrderModel } from "@modules/orders/infra/http/graphql/models/order-model";
+import {
+  IOrderViewModelResponse,
+  OrderViewModel,
+} from "@modules/orders/infra/http/view-models/order-view-model";
 import {
   CreateProduct,
   UpdateProduct,
@@ -183,5 +188,19 @@ export class ProductResolver {
     }
 
     return StockViewModel.toHTTP(stock);
+  }
+
+  @FieldResolver(() => [OrderModel])
+  async orders(
+    @Root() productModel: ProductModel,
+    @Ctx() context: IContext,
+  ): Promise<IOrderViewModelResponse[]> {
+    const { orderDataSource } = context.dataSources;
+
+    const { id } = productModel;
+
+    const orders = await orderDataSource.listByProductId(id);
+
+    return orders.map(OrderViewModel.toHTTP);
   }
 }

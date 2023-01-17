@@ -25,6 +25,14 @@ export class CancelOrder {
       throw new AppError("Order does not exist", "ORDER_NOT_FOUND", 404);
     }
 
+    if (order.canceledAt !== null) {
+      throw new AppError(
+        "Order already has canceled",
+        "ORDER_ALREADY_HAS_CANCELED",
+        403,
+      );
+    }
+
     if (order.customerId !== customerId) {
       throw new AppError(
         "Customer does not is owner of the order",

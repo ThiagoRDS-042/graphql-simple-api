@@ -79,6 +79,44 @@ describe("Update order", () => {
     ).rejects.toThrow(AppError);
   });
 
+  it("should not be able to update a order canceled", async () => {
+    const { id: customerId } = await inMemoryUsersRepository.create(
+      makeUser({ role: "CUSTOMER" }),
+    );
+
+    const { id: sellerId } = await inMemoryUsersRepository.create(
+      makeUser({ role: "SELLER" }),
+    );
+
+    const { id: productId } = await inMemoryProductsRepository.create(
+      makeProduct({
+        userId: sellerId,
+      }),
+    );
+
+    await inMemoryStocksRepository.create(
+      makeStock({
+        productId,
+        amount: 2,
+      }),
+    );
+
+    const order = await inMemoryOrdersRepository.create(
+      makeOrder({ customerId, productId, sellerId, amount: 1 }),
+    );
+
+    order.cancel();
+
+    await expect(
+      updateOrder.execute({
+        amount: 2,
+        customerId,
+        orderId: order.id,
+        productId,
+      }),
+    ).rejects.toThrow(AppError);
+  });
+
   it("should not be able to update a order with a customer is not the owner", async () => {
     const { id: customerId } = await inMemoryUsersRepository.create(
       makeUser({ role: "CUSTOMER" }),

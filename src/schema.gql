@@ -8,6 +8,11 @@ input AuthInput {
   password: String!
 }
 
+input CreateOrderInput {
+  amount: Float!
+  productId: ID!
+}
+
 input CreateProductInput {
   category: ProductCategory!
   description: String
@@ -34,6 +39,25 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input ListOrdersInput {
+  customerIdEquals: ID
+  isCanceled: Boolean
+  productIdEquals: ID
+  sellerIdEquals: ID
+}
+
+input ListOrdersToCustomerInput {
+  isCanceled: Boolean
+  productIdEquals: ID
+  sellerIdEquals: ID
+}
+
+input ListOrdersToSellerInput {
+  customerIdEquals: ID
+  isCanceled: Boolean
+  productIdEquals: ID
+}
+
 input ListProductsInput {
   categoryEquals: ProductCategory
   nameContains: String
@@ -50,15 +74,30 @@ input ListUsersInput {
 
 type Mutation {
   auth(authInput: AuthInput!): Boolean!
+  cancelOrder(orderId: String!): Boolean!
+  createOrder(createOrderInput: CreateOrderInput!): OrderModel!
   createProduct(createProductInput: CreateProductInput!): ProductModel!
   createStock(createStockInput: CreateStockInput!): StockModel!
   createUser(createUserInput: CreateUserInput!): UserModel!
   deleteProduct(productId: String!): Boolean!
   deleteUser: Boolean!
   logout: Boolean!
+  updateOrder(updateOrderInput: UpdateOrderInput!): OrderModel!
   updateProduct(updateProductInput: UpdateProductInput!): ProductModel!
   updateStock(updateStockInput: UpdateStockInput!): StockModel!
   updateUser(updateUserInput: UpdateUserInput!): UserModel!
+}
+
+type OrderModel {
+  amount: Float!
+  canceledAt: DateTime
+  createdAt: DateTime!
+  customer: UserModel!
+  id: ID!
+  price: Float!
+  product: ProductModel!
+  seller: UserModel!
+  updatedAt: DateTime!
 }
 
 """Available products categories"""
@@ -77,6 +116,7 @@ type ProductModel {
   description: String
   id: ID!
   name: String!
+  orders: [OrderModel!]!
   price: Float!
   stock: StockModel
   updatedAt: DateTime!
@@ -84,9 +124,13 @@ type ProductModel {
 }
 
 type Query {
+  listOrders(listOrdersInput: ListOrdersInput): [OrderModel!]!
+  listOrdersToCustomer(listOrdersToCustomerInput: ListOrdersToCustomerInput): [OrderModel!]!
+  listOrdersToSeller(listOrdersToSellerInput: ListOrdersToSellerInput): [OrderModel!]!
   listProducts(listProductsInput: ListProductsInput): [ProductModel!]!
   listStocks: [StockModel!]!
   listUsers(listUsersInput: ListUsersInput): [UserModel!]!
+  showOrder(orderId: String!): OrderModel!
   showProduct(productId: String!): ProductModel!
   showStockByProductId(productId: String!): StockModel!
   showUser: UserModel!
@@ -99,6 +143,12 @@ type StockModel {
   id: ID!
   product: ProductModel!
   updatedAt: DateTime!
+}
+
+input UpdateOrderInput {
+  amount: Float!
+  orderId: ID!
+  productId: ID!
 }
 
 input UpdateProductInput {
@@ -129,6 +179,7 @@ type UserModel {
   email: String!
   id: ID!
   name: String!
+  orders: [OrderModel!]!
   phone: String!
   products: [ProductModel!]!
   role: UserRoleModel!
