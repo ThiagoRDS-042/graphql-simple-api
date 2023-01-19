@@ -23,10 +23,19 @@ export class InMemoryProductsRepository implements IProductsRepository {
     return product;
   }
 
-  public async findById(productId: string): Promise<Product | null> {
-    const product = this.products.find(
+  public async findById(
+    productId: string,
+    deleted = false,
+  ): Promise<Product | null> {
+    let product = this.products.find(
       item => item.id === productId && !item.deletedAt,
     );
+
+    if (deleted) {
+      product = this.products.find(
+        item => item.id === productId && item.deletedAt,
+      );
+    }
 
     if (!product) {
       return null;

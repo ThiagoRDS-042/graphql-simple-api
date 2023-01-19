@@ -25,7 +25,7 @@ describe("Show product", () => {
     expect(inMemoryProductsRepository.products).toEqual([product]);
   });
 
-  it("should be able to show a non existing product", async () => {
+  it("should not be able to show a non existing product", async () => {
     await expect(
       showProduct.execute({
         productId: "non-existing-product",

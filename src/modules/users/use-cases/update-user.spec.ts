@@ -36,7 +36,7 @@ describe("Update customer", () => {
     expect(inMemoryUsersRepository.users).toEqual([user]);
   });
 
-  it("should be able to update a user with existing email", async () => {
+  it("should not be able to update a user with existing email", async () => {
     await inMemoryUsersRepository.create(
       makeUser({ email: "user@example.com.br" }),
     );
@@ -57,7 +57,7 @@ describe("Update customer", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to update a user with existing document", async () => {
+  it("should not be able to update a user with existing document", async () => {
     await inMemoryUsersRepository.create(
       makeUser({
         email: "user@example.com.br",
@@ -81,7 +81,7 @@ describe("Update customer", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to update a non existing user", async () => {
+  it("should not be able to update a non existing user", async () => {
     await expect(() =>
       updateCustomer.execute({
         email: "user@example.com.br",

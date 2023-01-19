@@ -98,6 +98,10 @@ export class User extends BaseEntity<IUserProps> {
     this.props.deletedAt = new Date();
   }
 
+  public active() {
+    this.props.deletedAt = null;
+  }
+
   public get deletedAt(): Date | null | undefined {
     return this.props.deletedAt;
   }

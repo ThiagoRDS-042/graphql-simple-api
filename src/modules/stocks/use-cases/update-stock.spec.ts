@@ -38,7 +38,7 @@ describe("Update stock", () => {
     expect(inMemoryStocksRepository.stocks).toEqual([stock]);
   });
 
-  it("should be able to update a stock with a non existing product", async () => {
+  it("should not be able to update a stock with a non existing product", async () => {
     await expect(
       updateStock.execute({
         amount: 0,
@@ -48,7 +48,7 @@ describe("Update stock", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to update a stock with that you don't own the product", async () => {
+  it("should not be able to update a stock with that you don't own the product", async () => {
     const { id: productId } = await inMemoryProductsRepository.create(
       makeProduct(),
     );
@@ -64,7 +64,7 @@ describe("Update stock", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to update a non existing stock", async () => {
+  it("should not be able to update a non existing stock", async () => {
     const { id: productId, userId } = await inMemoryProductsRepository.create(
       makeProduct(),
     );

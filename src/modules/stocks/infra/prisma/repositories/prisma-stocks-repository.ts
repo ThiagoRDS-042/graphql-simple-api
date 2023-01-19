@@ -28,9 +28,24 @@ export class PrismaStocksRepository implements IStocksRepository {
     return PrismaStockMapper.toDomain(stockCreated);
   }
 
-  public async findByProductId(productId: string): Promise<Stock | null> {
+  public async findByProductId(
+    productId: string,
+    deleted = false,
+  ): Promise<Stock | null> {
+    const deletedAt = {
+      equals: null,
+      not: undefined,
+    };
+
+    if (deleted) {
+      deletedAt.equals = undefined;
+      deletedAt.not = {
+        equals: null,
+      };
+    }
+
     const stock = await prisma.stock.findFirst({
-      where: { productId: { equals: productId }, deletedAt: { equals: null } },
+      where: { productId: { equals: productId }, deletedAt },
     });
 
     if (!stock) {

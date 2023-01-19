@@ -29,6 +29,7 @@ import {
   DeleteProduct,
   ListProducts,
   ShowProduct,
+  ActiveProduct,
 } from "@modules/products/use-cases";
 import { StockModel } from "@modules/stocks/infra/http/graphql/models/stock-model";
 import {
@@ -49,6 +50,9 @@ import {
   CreateProductInput,
   UpdateProductInput,
   ListProductsInput,
+  ActiveProductInput,
+  DeleteProductInput,
+  ShowProductInput,
 } from "../inputs";
 import { ProductCategory, ProductModel } from "../models/product-model";
 
@@ -102,14 +106,31 @@ export class ProductResolver {
   @UseMiddleware(ensureAuthenticated, ensureHasRole(["SELLER"]))
   @Mutation(() => Boolean)
   async deleteProduct(
-    @Arg("productId") productId: string,
+    @Arg("deleteProductInput") input: DeleteProductInput,
     @CurrentUser() currentUser: ICurrentUser,
   ): Promise<boolean> {
     const { userId } = currentUser;
+    const { productId } = input;
 
     const deleteProduct = container.resolve(DeleteProduct);
 
     await deleteProduct.execute({ userId, productId });
+
+    return true;
+  }
+
+  @UseMiddleware(ensureAuthenticated, ensureHasRole(["SELLER"]))
+  @Mutation(() => Boolean)
+  async activeProduct(
+    @Arg("activeProductInput") input: ActiveProductInput,
+    @CurrentUser() currentUser: ICurrentUser,
+  ): Promise<boolean> {
+    const { userId } = currentUser;
+    const { productId } = input;
+
+    const activeProduct = container.resolve(ActiveProduct);
+
+    await activeProduct.execute({ userId, productId });
 
     return true;
   }
@@ -149,8 +170,10 @@ export class ProductResolver {
   @UseMiddleware(ensureAuthenticated)
   @Query(() => ProductModel)
   async showProduct(
-    @Arg("productId") productId: string,
+    @Arg("showProductInput") input: ShowProductInput,
   ): Promise<IProductViewModelResponse> {
+    const { productId } = input;
+
     const showProduct = container.resolve(ShowProduct);
 
     const { product } = await showProduct.execute({ productId });

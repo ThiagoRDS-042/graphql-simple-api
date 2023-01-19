@@ -3,3 +3,4 @@ export { ListProducts } from "./list-products";
 export { ShowProduct } from "./show-product";
 export { UpdateProduct } from "./update-product";
 export { DeleteProduct } from "./delete-product";
+export { ActiveProduct } from "./active-product";

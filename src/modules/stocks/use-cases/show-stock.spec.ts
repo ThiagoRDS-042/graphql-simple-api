@@ -32,7 +32,7 @@ describe("Show stock", () => {
     expect(inMemoryStocksRepository.stocks).toEqual([stock]);
   });
 
-  it("should be able to show a non existing stock", async () => {
+  it("should not be able to show a non existing stock", async () => {
     await expect(
       showStock.execute({
         productId: "non-existing-stock",

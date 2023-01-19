@@ -34,7 +34,7 @@ describe("Update product", () => {
     expect(inMemoryProductsRepository.products).toEqual([product]);
   });
 
-  it("should be able to update a non existing product", async () => {
+  it("should not be able to update a non existing product", async () => {
     await expect(
       updateProduct.execute({
         category: "BOOKS",
@@ -47,7 +47,7 @@ describe("Update product", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to update a product that you don't own", async () => {
+  it("should not be able to update a product that you don't own", async () => {
     const { id: productId } = await inMemoryProductsRepository.create(
       makeProduct(),
     );

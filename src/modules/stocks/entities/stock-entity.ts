@@ -56,6 +56,10 @@ export class Stock extends BaseEntity<IStockProps> {
     this.props.deletedAt = new Date();
   }
 
+  public active() {
+    this.props.deletedAt = null;
+  }
+
   public get deletedAt(): Date | null | undefined {
     return this.props.deletedAt;
   }

@@ -29,7 +29,7 @@ describe("Create user", () => {
     expect(inMemoryUsersRepository.users).toEqual([user]);
   });
 
-  it("should be able to create a new user with existing email", async () => {
+  it("should not be able to create a new user with existing email", async () => {
     await createUser.execute({
       email: "user@example.com",
       name: "john doe",
@@ -51,7 +51,7 @@ describe("Create user", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to create a new user with existing document", async () => {
+  it("should not be able to create a new user with existing document", async () => {
     await createUser.execute({
       email: "user@example.com",
       name: "john doe",

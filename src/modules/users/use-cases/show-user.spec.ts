@@ -26,7 +26,7 @@ describe("Show user", () => {
     expect(inMemoryUsersRepository.users).toEqual([user]);
   });
 
-  it("should be able to show a non existing user", async () => {
+  it("should not be able to show a non existing user", async () => {
     await expect(() =>
       showCustomer.execute({
         userId: "non-existing-user",

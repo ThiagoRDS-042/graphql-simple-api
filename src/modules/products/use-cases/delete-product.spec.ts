@@ -41,7 +41,7 @@ describe("Delete product", () => {
     );
   });
 
-  it("should be able to delete a non existing product", async () => {
+  it("should not be able to delete a non existing product", async () => {
     await expect(
       deleteProduct.execute({
         productId: "non-existing-product",
@@ -50,7 +50,7 @@ describe("Delete product", () => {
     ).rejects.toThrow(AppError);
   });
 
-  it("should be able to delete a non existing product that you don't own", async () => {
+  it("should not be able to delete a non existing product that you don't own", async () => {
     const { id: productId } = await inMemoryProductsRepository.create(
       makeProduct(),
     );

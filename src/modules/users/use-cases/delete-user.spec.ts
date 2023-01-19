@@ -54,7 +54,7 @@ describe("Delete User", () => {
     );
   });
 
-  it("should be able to delete a non existing user", async () => {
+  it("should not be able to delete a non existing user", async () => {
     await expect(() =>
       deleteUser.execute({
         userId: "non-existing-user",

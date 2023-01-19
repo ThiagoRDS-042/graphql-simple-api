@@ -30,6 +30,7 @@ import {
   ProductViewModel,
 } from "@modules/products/infra/http/view-models/product-view-model";
 import {
+  ActiveUser,
   CreateUser,
   DeleteUser,
   ListUsers,
@@ -41,7 +42,12 @@ import {
   IUserViewModelResponse,
   UserViewModel,
 } from "../../view-models/user-view-model";
-import { CreateUserInput, ListUsersInput, UpdateUserInput } from "../inputs";
+import {
+  ActiveUserInput,
+  CreateUserInput,
+  ListUsersInput,
+  UpdateUserInput,
+} from "../inputs";
 import { UserRoleInput } from "../inputs/create-user-input";
 import { UserModel } from "../models/user-model";
 
@@ -107,6 +113,22 @@ export class UserResolver {
     const { key } = CookieConfig.newCookieConfig();
 
     res.clearCookie(key);
+
+    return true;
+  }
+
+  @UseMiddleware(ensureAuthenticated, ensureHasRole(["ADMIN"]))
+  @Mutation(() => Boolean)
+  async activeUser(
+    @Arg("activeUserInput") input: ActiveUserInput,
+  ): Promise<boolean> {
+    const { email } = input;
+
+    const activeUser = container.resolve(ActiveUser);
+
+    await activeUser.execute({
+      email,
+    });
 
     return true;
   }

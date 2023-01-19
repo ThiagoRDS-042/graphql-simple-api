@@ -29,15 +29,28 @@ export class PrismaProductsRepository implements IProductsRepository {
     return PrismaProductMapper.toDomain(productUpdated);
   }
 
-  public async findById(productId: string): Promise<Product | null> {
+  public async findById(
+    productId: string,
+    deleted = false,
+  ): Promise<Product | null> {
+    const deletedAt = {
+      equals: null,
+      not: undefined,
+    };
+
+    if (deleted) {
+      deletedAt.equals = undefined;
+      deletedAt.not = {
+        equals: null,
+      };
+    }
+
     const product = await prisma.product.findFirst({
       where: {
         AND: [
           {
             id: productId,
-            deletedAt: {
-              equals: null,
-            },
+            deletedAt,
           },
         ],
       },

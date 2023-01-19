@@ -26,10 +26,19 @@ export class InMemoryStocksRepository implements IStocksRepository {
     return stock;
   }
 
-  public async findByProductId(productId: string): Promise<Stock | null> {
-    const stock = this.stocks.find(
+  public async findByProductId(
+    productId: string,
+    deleted = false,
+  ): Promise<Stock | null> {
+    let stock = this.stocks.find(
       item => item.productId === productId && !item.deletedAt,
     );
+
+    if (deleted) {
+      stock = this.stocks.find(
+        item => item.productId === productId && item.deletedAt,
+      );
+    }
 
     if (!stock) {
       return null;

@@ -3,6 +3,14 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input ActiveProductInput {
+  productId: ID!
+}
+
+input ActiveUserInput {
+  email: String!
+}
+
 input AuthInput {
   email: String!
   password: String!
@@ -39,6 +47,10 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input DeleteProductInput {
+  productId: ID!
+}
+
 input ListOrdersInput {
   customerIdEquals: ID
   isCanceled: Boolean
@@ -73,13 +85,15 @@ input ListUsersInput {
 }
 
 type Mutation {
+  activeProduct(activeProductInput: ActiveProductInput!): Boolean!
+  activeUser(activeUserInput: ActiveUserInput!): Boolean!
   auth(authInput: AuthInput!): Boolean!
   cancelOrder(orderId: String!): Boolean!
   createOrder(createOrderInput: CreateOrderInput!): OrderModel!
   createProduct(createProductInput: CreateProductInput!): ProductModel!
   createStock(createStockInput: CreateStockInput!): StockModel!
   createUser(createUserInput: CreateUserInput!): UserModel!
-  deleteProduct(productId: String!): Boolean!
+  deleteProduct(deleteProductInput: DeleteProductInput!): Boolean!
   deleteUser: Boolean!
   logout: Boolean!
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderModel!
@@ -131,9 +145,13 @@ type Query {
   listStocks: [StockModel!]!
   listUsers(listUsersInput: ListUsersInput): [UserModel!]!
   showOrder(orderId: String!): OrderModel!
-  showProduct(productId: String!): ProductModel!
+  showProduct(showProductInput: ShowProductInput!): ProductModel!
   showStockByProductId(productId: String!): StockModel!
   showUser: UserModel!
+}
+
+input ShowProductInput {
+  productId: ID!
 }
 
 type StockModel {
