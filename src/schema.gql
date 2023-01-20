@@ -16,6 +16,10 @@ input AuthInput {
   password: String!
 }
 
+input CancelOrderInput {
+  orderId: ID!
+}
+
 input CreateOrderInput {
   amount: Float!
   productId: ID!
@@ -88,7 +92,7 @@ type Mutation {
   activeProduct(activeProductInput: ActiveProductInput!): Boolean!
   activeUser(activeUserInput: ActiveUserInput!): Boolean!
   auth(authInput: AuthInput!): Boolean!
-  cancelOrder(orderId: String!): Boolean!
+  cancelOrder(cancelOrderInput: CancelOrderInput!): Boolean!
   createOrder(createOrderInput: CreateOrderInput!): OrderModel!
   createProduct(createProductInput: CreateProductInput!): ProductModel!
   createStock(createStockInput: CreateStockInput!): StockModel!
@@ -144,13 +148,21 @@ type Query {
   listProducts(listProductsInput: ListProductsInput): [ProductModel!]!
   listStocks: [StockModel!]!
   listUsers(listUsersInput: ListUsersInput): [UserModel!]!
-  showOrder(orderId: String!): OrderModel!
+  showOrder(showOrderInput: ShowOrderInput!): OrderModel!
   showProduct(showProductInput: ShowProductInput!): ProductModel!
-  showStockByProductId(productId: String!): StockModel!
+  showStockByProductId(showStockInput: ShowStockInput!): StockModel!
   showUser: UserModel!
 }
 
+input ShowOrderInput {
+  orderId: ID!
+}
+
 input ShowProductInput {
+  productId: ID!
+}
+
+input ShowStockInput {
   productId: ID!
 }
 

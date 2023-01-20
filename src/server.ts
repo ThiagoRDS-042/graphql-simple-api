@@ -39,6 +39,8 @@ const bootstrap = async () => {
     context,
     formatError,
     dataSources,
+    healthCheckPath: "/health-check",
+    onHealthCheck: async () => true,
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({
         embed: true,

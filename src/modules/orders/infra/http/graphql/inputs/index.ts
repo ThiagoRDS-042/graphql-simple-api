@@ -3,3 +3,5 @@ export { UpdateOrderInput } from "./update-order-input";
 export { ListOrdersInput } from "./list-orders-input";
 export { ListOrdersToSellerInput } from "./list-orders-to-seller-input";
 export { ListOrdersToCustomerInput } from "./list-orders-to-customer-input";
+export { CancelOrderInput } from "./cancel-order-input";
+export { ShowOrderInput } from "./show-order-input";

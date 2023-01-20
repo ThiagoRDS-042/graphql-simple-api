@@ -34,7 +34,7 @@ import {
   IStockViewModelResponse,
   StockViewModel,
 } from "../../view-models/stock-view-model";
-import { CreateStockInput, UpdateStockInput } from "../inputs";
+import { CreateStockInput, ShowStockInput, UpdateStockInput } from "../inputs";
 import { StockModel } from "../models/stock-model";
 
 @Resolver(() => StockModel)
@@ -98,8 +98,10 @@ export class StockResolver {
   @UseMiddleware(ensureAuthenticated, ensureHasRole(["SELLER"]))
   @Query(() => StockModel)
   async showStockByProductId(
-    @Arg("productId") productId: string,
+    @Arg("showStockInput") input: ShowStockInput,
   ): Promise<IStockViewModelResponse> {
+    const { productId } = input;
+
     const showStock = container.resolve(ShowStock);
 
     const { stock } = await showStock.execute({

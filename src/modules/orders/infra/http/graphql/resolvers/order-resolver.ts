@@ -45,6 +45,8 @@ import {
   ListOrdersToCustomerInput,
   ListOrdersToSellerInput,
   UpdateOrderInput,
+  CancelOrderInput,
+  ShowOrderInput,
 } from "../inputs/";
 import { OrderModel } from "../models/order-model";
 
@@ -94,10 +96,11 @@ export class OrderResolver {
   @UseMiddleware(ensureAuthenticated, ensureHasRole(["CUSTOMER"]))
   @Mutation(() => Boolean)
   async cancelOrder(
-    @Arg("orderId") orderId: string,
+    @Arg("cancelOrderInput") input: CancelOrderInput,
     @CurrentUser() currentUser: ICurrentUser,
   ): Promise<boolean> {
     const { userId: customerId } = currentUser;
+    const { orderId } = input;
 
     const cancelOrder = container.resolve(CancelOrder);
 
@@ -203,9 +206,11 @@ export class OrderResolver {
   @UseMiddleware(ensureAuthenticated)
   @Query(() => OrderModel)
   async showOrder(
-    @Arg("orderId") orderId: string,
+    @Arg("showOrderInput") input: ShowOrderInput,
     @CurrentUser() currentUser: ICurrentUser,
   ): Promise<IOrderViewModelResponse> {
+    const { orderId } = input;
+
     const showOrder = container.resolve(ShowOrder);
 
     const { order } = await showOrder.execute({
